@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="row">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <ion-title>
+            Guru Stock Management
+          </ion-title>
+        </div>
+        <div>
+          <ion-title>
+            <button type="button" mat-icon-button>
+              <mat-icon>logout</mat-icon>
+            </button>
+          </ion-title>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="row h-100">
+    <div *ngIf="!productsPanelEnable" class="d-flex justify-content-center align-items-center">
+      <div>
+        <app-login-panel (isLoginSuccess)="loginSuccess($event)"></app-login-panel>
+      </div>
+    </div>
+    <div *ngIf="productsPanelEnable" >
+      <div class="container">
+        <app-navbar></app-navbar>
+      </div>
+      <div class="container">
+        <app-display></app-display>
+      </div>
+    </div>
+  </div>
+</ion-content>
