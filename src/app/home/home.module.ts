@@ -16,9 +16,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
+import {MatDialogModule} from '@angular/material/dialog';
 import { LoginPanelService } from './login-panel/login-panel.service';
+import {ProductDisplayModal} from './product-display/product-display-modal/product-display.modal.component'
 @NgModule({
   imports: [
+    MatDialogModule,
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
@@ -33,7 +36,7 @@ import { LoginPanelService } from './login-panel/login-panel.service';
     MatSelectModule,
     HttpClientModule
   ],
-  declarations: [HomePage,Navbar,ProductDisplay,LoginPanel],
+  declarations: [HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal],
   providers : [LoginPanelService]
 })
 export class HomePageModule {}

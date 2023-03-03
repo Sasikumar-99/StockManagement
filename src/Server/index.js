@@ -1,6 +1,6 @@
 const express = require('express')();
 const mongoose = require('mongoose');
-const {createUserCollection} = require('./controller/controller')
+const {createUserCollection,postProduct} = require('./controller/controller')
 const bodyParser = require('body-parser')
 const cors = require('cors');
 var allowedOrigins = /^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/;
@@ -37,6 +37,7 @@ function setRoutes(){
   })
   express.get('getAllUser',)
   express.post('/login',createUserCollection)
+  express.post('/products',postProduct)
 }
 
 async function hostServer(){

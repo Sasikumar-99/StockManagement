@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { ProductDisplayModal } from "../product-display/product-display-modal/product-display.modal.component";
 
 @Component({
   selector : 'app-navbar',
@@ -7,5 +9,12 @@ import { Component } from "@angular/core";
 })
 
 export class Navbar {
+  constructor(public dialog: MatDialog) {}
 
+  openDialog() {
+    const dialogRef = this.dialog.open(ProductDisplayModal);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }

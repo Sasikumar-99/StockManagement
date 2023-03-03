@@ -7,12 +7,27 @@ const loginSchema = new Schema({
   password :{
     type : String
   },
-  products : {
+  productsId : {
     type : String
   }
 })
 
+const productSchema = new Schema({
+  productName : {
+    type : String
+  },
+  sellingPrice : {
+    type : String
+  },
+  receivedPrice : {
+    type : String
+  },
+  quantity : {
+    type : Number
+  }
+})
 
 const LoginSchema = mongoose.model('Users',loginSchema);
+const ProductsSchema = mongoose.model('Products',productSchema)
 
-module.exports = {LoginSchema}
+module.exports = {LoginSchema,ProductsSchema}
