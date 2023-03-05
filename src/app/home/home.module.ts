@@ -17,10 +17,14 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
 import { LoginPanelService } from './login-panel/login-panel.service';
-import {ProductDisplayModal} from './product-display/product-display-modal/product-display.modal.component'
+import {ProductDisplayModal} from './product-display/product-display-modal/product-display.modal.component';
+import { ProductService } from './product-display/product.service';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   imports: [
+    ToastrModule,
     MatDialogModule,
     ReactiveFormsModule,
     CommonModule,
@@ -31,12 +35,13 @@ import {ProductDisplayModal} from './product-display/product-display-modal/produ
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
+    MatCardModule,
     MatButtonModule,
     MatPaginatorModule,
     MatSelectModule,
     HttpClientModule
   ],
   declarations: [HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal],
-  providers : [LoginPanelService]
+  providers : [ProductService,LoginPanelService]
 })
 export class HomePageModule {}

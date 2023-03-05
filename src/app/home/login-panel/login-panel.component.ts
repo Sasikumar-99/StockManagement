@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { LoginPanelService } from './login-panel.service';
 import { AlertController } from '@ionic/angular';
 import { EventEmitter } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login-panel',
   templateUrl: 'login-panel.component.html',
@@ -12,7 +13,7 @@ export class LoginPanel {
   loginForm !:FormGroup;
   @Output()isLoginSuccess = new EventEmitter();
 
-  constructor (private _loginService : LoginPanelService,private alertController:AlertController){
+  constructor (private _loginService : LoginPanelService,private alertController:AlertController,private _toaster:ToastrService){
     this.loginForm = new FormGroup({
       userName : new FormControl('', [Validators.required]),
       password : new FormControl('', [Validators.required]),
@@ -37,7 +38,7 @@ export class LoginPanel {
 
   onLogin(){
     this._loginService.userManagement(this.loginForm.value).subscribe( async (value:any)=>{
-      if(value){
+      if(!value.error){
             const alert =await this.alertController.create({
             header: 'Success',
             message: value.message,
@@ -52,11 +53,14 @@ export class LoginPanel {
             ],
           });
           await alert.present();
+          this._loginService.setLocalStorage('user',value.body)
+      }else{
+        this._toaster.error(value.message)
       }
     },async (rej)=>{
       const alert =await this.alertController.create({
         header: 'Error',
-        message: rej.message,
+        message: rej.error.message,
         buttons: ['OK'],
       });
       await alert.present();

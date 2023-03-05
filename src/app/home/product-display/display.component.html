@@ -2,42 +2,77 @@
   <ion-searchbar animated="true" placeholder="Type to Search.." (keyup)="applyFilter($event)" #input></ion-searchbar>
 </div>
 <div>
-  <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
+  <ion-grid >
+     <ion-row >
+      <ion-col *ngFor="let displayedColumn of displayColumnsHeadder">
+        {{displayedColumn}}
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let row of tableDisplay;let i=index">
+      <ion-col>
+        {{row.productName}}
+      </ion-col>
+      <ion-col>
+        {{row.sellingPrice}}
+      </ion-col>
+      <ion-col>
+        {{row.receivedPrice}}
+      </ion-col>
+      <ion-col>
+        {{row.quantity}}
+      </ion-col>
+      <ion-col>
+        <div class="d-flex align-items-center justify-content-between">
+          <mat-icon color="primary" (click)="EditProduct(row._id)">edit</mat-icon>
+          <mat-icon color ="warn"(click)="deleteProduct(i)">delete</mat-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-      <!-- Product Name -->
+    <!-- <table mat-table [dataSource]="dataSource" matSort>
+
       <ng-container matColumnDef="productName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
         <td mat-cell *matCellDef="let row"> {{row.productName}} </td>
       </ng-container>
 
-      <!-- Selling Price -->
       <ng-container matColumnDef="sellingPrice">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Selling Price </th>
         <td mat-cell *matCellDef="let row"> {{row.sellingPrice}} </td>
       </ng-container>
 
-      <!-- Received Price -->
       <ng-container matColumnDef="receivedPrice">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Received Price </th>
         <td mat-cell *matCellDef="let row"> {{row.receivedPrice}} </td>
       </ng-container>
 
-      <!-- Quantity -->
       <ng-container matColumnDef="quantity">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity(units) </th>
         <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="Edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+        <td mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="EditProduct(row)"><mat-icon>edit</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Delete">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+        <td mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="EditProduct(row)"><mat-icon>edit</mat-icon></button>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-      <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow >
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="4">No Products to Display</td>
       </tr>
-    </table>
+    </table> -->
 
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
   </div>
-</div>

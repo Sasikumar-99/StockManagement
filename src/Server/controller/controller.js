@@ -1,4 +1,4 @@
-const {LoginSchema,ProductsSchema} = require('../model/model')
+const {LoginSchema,ProductsSchema,ProductItemSchema} = require('../model/model')
 
 
 const createUserCollection = async(req,res,next)=>{
@@ -6,20 +6,31 @@ const createUserCollection = async(req,res,next)=>{
       const user = await req.body
       const existingUser = await LoginSchema.findOne({userName:user.userName})
       if(!existingUser && user.IsRegister){
-        const createCollection = await LoginSchema.create({
-          userName:user.userName,
-          password:user.password
+        const createProducts = await ProductsSchema.create({
+          products:[]
         })
-        if(createCollection){
-          res.status(200).json({
-            error : false,
-            message : "user registered successfully",
-            body :user
+        if(createProducts){
+          const createCollection = await LoginSchema.create({
+            userName:user.userName,
+            password:user.password,
+            productsId:createProducts._id
           })
+          if(createCollection){
+            res.status(200).json({
+              error : false,
+              message : "user registered successfully",
+              body :createCollection
+            })
+          }else{
+            res.status(500).json({
+              error : true,
+              message : "something went wrong while creating user",
+            })
+          }
         }else{
           res.status(500).json({
             error : true,
-            message : "something went wrong",
+            message : "something went wrong while creating products",
           })
         }
       }else if(existingUser && user.Islogin){
@@ -56,52 +67,107 @@ const postProduct = async(req,res,next)=>{
 try{
   const product = await req.body.products;
   const userData = await req.body.user;
-  const id = await req.params.id;
-  const existingProducts = await ProductsSchema.findOne({_id : id })
-  if(existingProducts){
-    res.status(503).json({
-      error:true,
-      message:'products already exists'
-    })
-  } else {
-    const addedProducts = await ProductsSchema.create({
-      product: product
-    })
-    if(addedProducts){
-     const updatedUserData = await updateProductsId(userData,addedProducts);
-     if(updatedUserData){
+  const id = await userData.productsId;
+  if(id){
+  const existingProducts = await ProductsSchema.findOneAndUpdate({_id : id },{
+    products : product
+  },{
+    new : true
+  });
+    if(existingProducts){
       res.status(200).json({
-        error: false,
-        message : 'Products Added Sucessfully',
-        body : addedProducts
+        error:false,
+        message:'products added successfully',
+        body : existingProducts
       })
-     }
     }
+  }else {
+      res.status(500).json({
+        error: true,
+        message : 'id not found'
+      })
   }
-
 }catch(err){
  console.log(err)
 }
 }
 
-
-const updateProductsId = async(userData,Products)=>{
-  const getUserData = await LoginSchema.findOne({_id:userData.id});
-  if(getUserData){
-    const updatedUserData = await LoginSchema.updateOne({_id : userData.id},{
-      $set : {
-        productsId : Products._id
+const getAllProducts = async(req,res,next)=>{
+  try{
+    const productId = await req.params.id
+    if(productId){
+      const existingProductsData = await ProductsSchema.findOne({_id:productId})
+      if(existingProductsData){
+        res.status(200).json({
+          error:false,
+          message:'products fetched successfully',
+          body:existingProductsData
+        })
+      }else{
+        res.status(404).json({
+          error:true,
+          message:'products not available',
+        })
       }
-    },)
-    if(updatedUserData){
-      return true;
-    }
-  }else{
+    } else{
       res.status(404).json({
-        error: true,
-        message : 'User not found'
+        error:true,
+        message:'product id not available',
       })
-      return false;
+    }
+  }catch(err){
+    console.log(err);
   }
 }
-module.exports = {createUserCollection,postProduct}
+
+const deleteProducts = async(req,res,next)=> {
+  try{
+    const productsId = req.params.productsId;
+    const productItemIndex = req.params.productItemIndex;
+    const products = await ProductsSchema.findOne({_id:productsId})
+    if(products){
+    const productItem = products.products.splice(productItemIndex,1)
+    if(productItem){
+      const updatedProducts = await ProductsSchema.findOneAndUpdate({_id:productsId},{
+        products:products.products
+      },{new:true})
+      if(updatedProducts){
+        res.status(200).json({
+          error:false,
+          message:"product deleted and updated succesfully",
+          body:productItem
+        })
+      }else{
+        res.status(200).json({
+          error:false,
+          message:"product deleted successfully",
+          body:productItem
+        })
+      }
+    }else{
+      res.status(404).json({
+        error:true,
+        message:'could not Delete the Product Item'
+      })
+    }
+    }else{
+      res.status(404).json({
+        error:true,
+        message:'could not find the user products'
+      })
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+const updateProductsId = async(userData,Products)=>{
+  const getUserData = await LoginSchema.findOne({_id:userData._id});
+    if(!userData.productsId){
+      const updatedUserData = await LoginSchema.updateOne({_id : userData._id},{
+        $set : {
+          productsId : Products._id
+        }
+      },)
+    }
+}
+module.exports = {createUserCollection,postProduct,getAllProducts,deleteProducts}

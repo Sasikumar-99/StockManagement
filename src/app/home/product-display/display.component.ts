@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ViewChild } from "@angular/core";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import { ProductService } from "./product.service";
+import { LoginPanelService } from "../login-panel/login-panel.service";
+import { ToastrService } from "ngx-toastr";
 
 export interface UserData {
   productName: string;
@@ -17,19 +20,15 @@ export interface UserData {
 })
 
 export class ProductDisplay implements AfterViewInit {
-  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity'];
+  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','Actions'];
+  displayColumnsHeadder : string[] = ['Product Name','Selling Price', 'Received Price', 'Quantity', 'Actions']
   dataSource !: MatTableDataSource<UserData>;
-  productsValue = {
-    productName : '',
-    sellingPrice : '',
-    receivedPrice : '',
-    quantity : 0
-  }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-  constructor (){
-    this.dataSource = new MatTableDataSource([this.productsValue]);
+   user:any
+   tableDisplay:any
+  constructor (private _productService:ProductService,
+    private _loginService:LoginPanelService,private _toaster:ToastrService){
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -41,8 +40,45 @@ export class ProductDisplay implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.user = this._loginService.getLocalStorage('user');
+    this.getAllProducts();
+    this._productService.productValueUpdated.subscribe(value=>{
+      this.getAllProducts()
+    })
   }
 
+  getAllProducts(){
+    this._productService.getProducts(this.user.productsId).subscribe((value:any) => {
+      if(!value.error){
+        this.tableDisplay = value.body.products
+        this.dataSource = new MatTableDataSource(value.body.products)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }else{
+        this._toaster.error(value.message)
+      }
+    },(rej)=>{
+      if(rej){
+        this._toaster.error(rej.error.message)
+      }
+    })
+  }
+
+  EditProduct(products:any){
+    console.log(products);
+
+  }
+
+  deleteProduct(productItemIndex:any){
+    this._productService.deleteProduct(this.user.productsId,productItemIndex).subscribe((value:any)=> {
+      if(value.error){
+        this._toaster.error(value.message)
+      }else{
+        this._toaster.success(value.message)
+        this.getAllProducts()
+      }
+    },(rej)=>{
+      this._toaster.error(rej.error.message)
+    })
+  }
 }

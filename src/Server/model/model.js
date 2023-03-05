@@ -27,7 +27,13 @@ const productSchema = new Schema({
   }
 })
 
+const productsArray = new Schema({
+  products : [
+    productSchema
+  ]
+})
 const LoginSchema = mongoose.model('Users',loginSchema);
-const ProductsSchema = mongoose.model('Products',productSchema)
+const ProductsSchema = mongoose.model('Products',productsArray)
+const ProductItemSchema = mongoose.model('ProducyItemSchema',productSchema )
 
-module.exports = {LoginSchema,ProductsSchema}
+module.exports = {LoginSchema,ProductsSchema,ProductItemSchema}

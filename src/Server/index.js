@@ -1,6 +1,6 @@
 const express = require('express')();
 const mongoose = require('mongoose');
-const {createUserCollection,postProduct} = require('./controller/controller')
+const {createUserCollection,postProduct,getAllProducts,deleteProducts} = require('./controller/controller')
 const bodyParser = require('body-parser')
 const cors = require('cors');
 var allowedOrigins = /^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/;
@@ -35,9 +35,12 @@ function setRoutes(){
   express.get('/',(req,res)=>{
     res.send('hello')
   })
-  express.get('getAllUser',)
-  express.post('/login',createUserCollection)
-  express.post('/products',postProduct)
+  express.get('getAllUser',);
+  express.get('/getAllProducts/:id',getAllProducts);
+
+  express.post('/login',createUserCollection);
+  express.post('/products',postProduct);
+  express.delete('/deleteProducts/:productsId/:productItemId',deleteProducts)
 }
 
 async function hostServer(){

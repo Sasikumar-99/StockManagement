@@ -1,6 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { ToastrService } from "ngx-toastr";
+import { LoginPanelService } from "../../login-panel/login-panel.service";
+import { ProductService } from "../product.service";
 
 @Component({
   selector : 'app-product-display-modal',
@@ -11,7 +14,10 @@ import { MatDialog } from "@angular/material/dialog";
 export class ProductDisplayModal {
   productsAdd!:FormGroup
 
-  constructor(private matdialog:MatDialog){
+  constructor(private matdialog:MatDialog,private _productService:ProductService,
+    private _toaster:ToastrService,
+    private loginService:LoginPanelService,
+    @Inject(MAT_DIALOG_DATA) public data:any){
     this.productsAdd = new FormGroup({
       productName : new FormControl('',Validators.required),
       sellingPrice : new FormControl('',Validators.required),
@@ -34,6 +40,24 @@ export class ProductDisplayModal {
   }
 
   productsSubmit(){
-    console.log(this.productsAdd.value)
+    const user = this.loginService.getLocalStorage('user')
+    this._productService.getProducts(user.productsId).subscribe((value:any) => {
+      if(!value.error){
+        value.body.products.push(this.productsAdd.value)
+        this._productService.addProducts(value.body.products,user).subscribe((value:any) =>{
+            if(value.error){
+                this._toaster.error(value.message)
+              }else{
+                this._toaster.success(value.message)
+              }
+            },(rej)=>{
+              this._toaster.error(rej.error.message)
+            })
+      }
+    },(rej)=>{
+      if(rej){
+        this._toaster.error(rej.error.message)
+      }
+    })
   }
 }
