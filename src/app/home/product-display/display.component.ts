@@ -11,6 +11,7 @@ export interface UserData {
   sellingPrice: string;
   receivedPrice: string;
   quantity: number;
+  _id:string
 }
 
 @Component({
@@ -20,8 +21,8 @@ export interface UserData {
 })
 
 export class ProductDisplay implements AfterViewInit {
-  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','Actions'];
-  displayColumnsHeadder : string[] = ['Product Name','Selling Price', 'Received Price', 'Quantity', 'Actions']
+  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete'];
+  displayColumnsHeader : string[] = ['Product Name','Selling Price', 'Received Price','quantity', 'Edit', 'Delete']
   dataSource !: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -33,7 +34,7 @@ export class ProductDisplay implements AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
+    this.tableDisplay = this.dataSource.filteredData
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -80,5 +81,10 @@ export class ProductDisplay implements AfterViewInit {
     },(rej)=>{
       this._toaster.error(rej.error.message)
     })
+  }
+
+  assignPages(event:any){
+    console.log(event);
+
   }
 }
