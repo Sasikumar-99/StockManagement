@@ -1,8 +1,25 @@
-table {
-  width: 100%;
-}
 
 mat-header-cell,mat-cell{
   padding: 0px !important;
   justify-content: center!important;
+}
+
+mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  height: calc( 100vh - 180px);
+  overflow: auto;
+}
+
+.mat-column-name {
+  height: 100px;
+}
+
+mat-paginator{
+  width: 100%;
 }

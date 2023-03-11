@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ViewChild, ViewEncapsulation } from "@angular/core";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -24,6 +24,7 @@ export interface UserData {
 
 export class ProductDisplay implements AfterViewInit {
   displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete','code'];
+  displayedFooter:string[]=['paginator']
   dataSource !: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -52,17 +53,21 @@ export class ProductDisplay implements AfterViewInit {
   }
 
   getAllProducts(){
+    this._loginService.showLoading();
     this._productService.getProducts(this.user.productsId).subscribe((value:any) => {
       if(!value.error){
+        this._loginService.dismissLoading();
         this.tableDisplay = value.body.products
         this.dataSource = new MatTableDataSource(value.body.products)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }else{
+        this._loginService.dismissLoading();
         this._toaster.error(value.message)
       }
     },(rej)=>{
       if(rej){
+        this._loginService.dismissLoading();
         this._toaster.error(rej.error.message)
       }
     })
@@ -73,14 +78,18 @@ export class ProductDisplay implements AfterViewInit {
   }
 
   deleteProduct(productItemIndex:any){
+    this._loginService.showLoading();
     this._productService.deleteProduct(this.user.productsId,productItemIndex).subscribe((value:any)=> {
       if(value.error){
+        this._loginService.dismissLoading();
         this._toaster.error(value.message)
       }else{
+        this._loginService.dismissLoading();
         this._toaster.success(value.message)
         this.getAllProducts()
       }
     },(rej)=>{
+      this._loginService.dismissLoading();
       this._toaster.error(rej.error.message)
     })
   }

@@ -24,6 +24,7 @@ export class Navbar {
   addProducts() {
         const dialogRef = this.dialog.open(ProductDisplayModal);
         dialogRef.afterClosed().subscribe(result => {
+          this._loginService.dismissLoading();
           this._productService.emitSubject(true);
         });
   }
@@ -39,6 +40,7 @@ export class Navbar {
       const dialogRef = this.dialog.open(OtpModal)
       dialogRef.afterClosed().subscribe((result:any) => {
         this.toggleDone.setValue(false);
+        this._loginService.dismissLoading();
         this._productService.emitSubject(true);
       });
     }

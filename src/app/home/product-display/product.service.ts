@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-
+import { LoadingController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  _url: string = 'http://localhost:3000/'
+  _url: string = environment.baseUrl
   productValueUpdated = new EventEmitter();
-
-  constructor(private _http:HttpClient) { }
+  private _loading:any
+  constructor(private _http:HttpClient,private loading:LoadingController) { }
 
   addProducts(productBody:any,user:any){
     const userData = {

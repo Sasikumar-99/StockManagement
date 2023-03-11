@@ -30,15 +30,19 @@ export class OtpModal{
   }
 
   saveSecretKey(){
+    this._loginService.showLoading();
     const user = this._loginService.getLocalStorage('user');
     this._loginService.setSecretKey(user._id,this._secretKey).subscribe((value:any)=>{
       if(value.error){
-        this._toaster.error(value.message)
+        this._loginService.dismissLoading();
+        this._toaster.error(value.message);
       }else{
+        this._loginService.dismissLoading();
         this._loginService.setLocalStorage('user',value.body)
-        this._toaster.success(value.message)
+        this._toaster.success(value.message);
       }
     },(rej)=>{
+      this._loginService.dismissLoading();
       this._toaster.error(rej.error.message)
     })
   }

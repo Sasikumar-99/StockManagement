@@ -16,7 +16,7 @@ export class SecretKeyDirective implements AfterViewInit{
    setReceivedKey(){
     let matchedValue:any = []
     const nativeEle = this.el.nativeElement.innerText.split('')
-    if(this.user.secretKey.length){
+    if(this.user.secretKey.length===10){
       this.user.secretKey.forEach((value:any) => {
         nativeEle.forEach((element:any) => {
           if(value.value === parseInt(element)){

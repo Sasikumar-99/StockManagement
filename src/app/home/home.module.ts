@@ -26,6 +26,8 @@ import { NgOtpInputModule } from 'ng-otp-input';
 import { OtpModal } from './otp-modal/otp.modal.component';
 import { SecretKeyDirective } from '../secret-key.directive';
 import { QRCodeModule } from 'angularx-qrcode';
+import { Spinner } from './spinner/spinnet.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   imports: [
     QRCodeModule,
@@ -45,9 +47,10 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatPaginatorModule,
     MatSelectModule,
     HttpClientModule,
-    NgOtpInputModule
+    NgOtpInputModule,
+    MatTooltipModule
   ],
-  declarations: [SecretKeyDirective,HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal,OtpModal],
+  declarations: [Spinner,SecretKeyDirective,HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal,OtpModal],
   providers : [ProductService,LoginPanelService]
 })
 export class HomePageModule {}

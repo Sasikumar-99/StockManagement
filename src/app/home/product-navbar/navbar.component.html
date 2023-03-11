@@ -6,7 +6,10 @@
       </button>
     </div>
     <div>
-      <ion-toggle [formControl]="toggleDone" (ionChange)="secretKeyEnabled($event)" [enableOnOffLabels]="true" color="dark"></ion-toggle>
+      <div class="d-flex justify-content-center align-items-center flex-column-reverse">
+        <ion-toggle [formControl]="toggleDone" (ionChange)="secretKeyEnabled($event)" [enableOnOffLabels]="true" color="dark"></ion-toggle>
+        <span>Enable To Set SecretKey</span>
+      </div>
     </div>
     <div>
       <button type="button" mat-icon-button (click)="addProducts()">
