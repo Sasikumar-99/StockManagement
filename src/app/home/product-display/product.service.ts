@@ -7,7 +7,7 @@ import { EventEmitter } from '@angular/core';
 })
 export class ProductService {
   _url: string = 'http://localhost:3000/'
-  productValueUpdated = new EventEmitter()
+  productValueUpdated = new EventEmitter();
 
   constructor(private _http:HttpClient) { }
 
@@ -23,11 +23,15 @@ export class ProductService {
     return this._http.get(`${this._url}getAllProducts/${productId}`)
   }
 
-  deleteProduct(productId:string,ProductItemIndex:string){
+  deleteProduct(productId:string,ProductItemIndex:any){
     return this._http.delete(`${this._url}deleteProducts/${productId}/${ProductItemIndex}`)
   }
 
   emitSubject(value:any){
     this.productValueUpdated.emit(value)
+  }
+
+  updateProduct(productId:string,ProductItemIndex:any,editedData:any){
+    return this._http.put(`${this._url}editProducts/${productId}/${ProductItemIndex}`,editedData)
   }
 }

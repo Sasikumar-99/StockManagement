@@ -1,5 +1,10 @@
 <form [formGroup]="productsAdd" (ngSubmit)="productsSubmit()">
-  <h2 class="pb-0 mb-0" mat-dialog-title>Add Products</h2>
+  <div *ngIf="!Editproducts else update">
+    <h2 class="pb-0 mb-0" mat-dialog-title>Add Products</h2>
+  </div>
+  <ng-template #update>
+    <h2 class="pb-0 mb-0" mat-dialog-title>Update Products</h2>
+  </ng-template>
   <mat-dialog-content  class="mat-typography d-flex flex-column justify-content-around align-items-center">
   <div>
         <mat-form-field class="example-full-width" appearance="outline">
@@ -39,7 +44,10 @@
 </div>
   </mat-dialog-content>
   <mat-dialog-actions class="justify-content-end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button type="submit" mat-button cdkFocusInitial>submit</button>
+    <ion-button mat-dialog-close>Cancel</ion-button>
+    <ion-button *ngIf="Editproducts else submit" type="submit" >Update</ion-button>
+    <ng-template #submit>
+      <ion-button type="submit" >Submit</ion-button>
+    </ng-template>
   </mat-dialog-actions>
 </form>

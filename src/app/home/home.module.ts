@@ -22,8 +22,13 @@ import { LoginPanelService } from './login-panel/login-panel.service';
 import {ProductDisplayModal} from './product-display/product-display-modal/product-display.modal.component';
 import { ProductService } from './product-display/product.service';
 import { ToastrModule } from 'ngx-toastr';
+import { NgOtpInputModule } from 'ng-otp-input';
+import { OtpModal } from './otp-modal/otp.modal.component';
+import { SecretKeyDirective } from '../secret-key.directive';
+import { QRCodeModule } from 'angularx-qrcode';
 @NgModule({
   imports: [
+    QRCodeModule,
     ToastrModule,
     MatDialogModule,
     ReactiveFormsModule,
@@ -39,9 +44,10 @@ import { ToastrModule } from 'ngx-toastr';
     MatButtonModule,
     MatPaginatorModule,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    NgOtpInputModule
   ],
-  declarations: [HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal],
+  declarations: [SecretKeyDirective,HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal,OtpModal],
   providers : [ProductService,LoginPanelService]
 })
 export class HomePageModule {}

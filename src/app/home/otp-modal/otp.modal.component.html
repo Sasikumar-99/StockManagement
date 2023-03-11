@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Enter Your Secret Key</h1>
+<div mat-dialog-content>
+<ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:10}"></ng-otp-input>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button (click)="saveSecretKey()">Save</button>
+</div>

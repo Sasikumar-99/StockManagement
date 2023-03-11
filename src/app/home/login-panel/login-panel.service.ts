@@ -23,4 +23,8 @@ export class LoginPanelService{
       return 'value does not exist with the provided key';
     }
   }
+
+  setSecretKey(id:string,body:any){
+    return this._http.put(`${this._domain}updateUser/${id}`,body)
+  }
 }

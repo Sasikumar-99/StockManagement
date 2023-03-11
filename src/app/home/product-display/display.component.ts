@@ -5,6 +5,8 @@ import {MatSort} from '@angular/material/sort';
 import { ProductService } from "./product.service";
 import { LoginPanelService } from "../login-panel/login-panel.service";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog } from "@angular/material/dialog";
+import { ProductDisplayModal } from "./product-display-modal/product-display.modal.component";
 
 export interface UserData {
   productName: string;
@@ -21,15 +23,16 @@ export interface UserData {
 })
 
 export class ProductDisplay implements AfterViewInit {
-  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete'];
-  displayColumnsHeader : string[] = ['Product Name','Selling Price', 'Received Price','quantity', 'Edit', 'Delete']
+  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete','code'];
   dataSource !: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
    user:any
    tableDisplay:any
+   tableEditable!:boolean
   constructor (private _productService:ProductService,
-    private _loginService:LoginPanelService,private _toaster:ToastrService){
+    private _loginService:LoginPanelService,private _toaster:ToastrService,private matDialog:MatDialog){
+      this.tableEditable = false;
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -65,9 +68,8 @@ export class ProductDisplay implements AfterViewInit {
     })
   }
 
-  EditProduct(products:any){
-    console.log(products);
-
+  EditProduct(products:any,productIndex:any){
+    this.matDialog.open(ProductDisplayModal,{data:{products:products,productItemIndex:productIndex}})
   }
 
   deleteProduct(productItemIndex:any){
@@ -84,7 +86,5 @@ export class ProductDisplay implements AfterViewInit {
   }
 
   assignPages(event:any){
-    console.log(event);
-
   }
 }

@@ -1,9 +1,12 @@
 <div class="container">
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-around align-items-center">
     <div>
-      <button type="button" mat-icon-button>
+      <button (click)="refreshButton()" type="button" mat-icon-button>
         <mat-icon>refresh</mat-icon>
       </button>
+    </div>
+    <div>
+      <ion-toggle [formControl]="toggleDone" (ionChange)="secretKeyEnabled($event)" [enableOnOffLabels]="true" color="dark"></ion-toggle>
     </div>
     <div>
       <button type="button" mat-icon-button (click)="addProducts()">
