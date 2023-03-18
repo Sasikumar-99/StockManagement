@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { LoginPanelService } from '../login-panel/login-panel.service';
 import { ProductService } from '../product-display/product.service';
@@ -8,13 +8,15 @@ import { ProductService } from '../product-display/product.service';
   selector: 'app-otp',
   templateUrl: 'otp.modal.component.html',
   styleUrls: ['otp.modal.component.css'],
+  encapsulation:ViewEncapsulation.None
 })
 
 export class OtpModal{
-  private _secretKey:any = []
+   _secretKey:any = []
   constructor(private _loginService:LoginPanelService,private _toaster:ToastrService,private _productService:ProductService){}
 
   onOtpChange(ev:any){
+    this._secretKey = [];
     if(ev.length === 10){
       for(let i=0;i<ev.length;i++){
         this._secretKey.push({

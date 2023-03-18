@@ -10,6 +10,7 @@ export class ProductService {
   _url: string = environment.baseUrl
   productValueUpdated = new EventEmitter();
   private _loading:any
+   _editValueEmitter = new EventEmitter();
   constructor(private _http:HttpClient,private loading:LoadingController) { }
 
   addProducts(productBody:any,user:any){
@@ -34,5 +35,11 @@ export class ProductService {
 
   updateProduct(productId:string,ProductItemIndex:any,editedData:any){
     return this._http.put(`${this._url}editProducts/${productId}/${ProductItemIndex}`,editedData)
+  }
+
+  emitEditingData(value:any){
+    return new Promise((resolve,reject)=>{
+      resolve(this._editValueEmitter.emit(value))
+    })
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginPanelService } from './login-panel/login-panel.service';
 
 
 @Component({
@@ -9,9 +10,17 @@ import { Component } from '@angular/core';
 export class HomePage {
 
   productsPanelEnable:Boolean = false
-  constructor() {}
+  constructor(private _loginService:LoginPanelService) {}
 
   loginSuccess(event:any){
     this.productsPanelEnable = event
+  }
+
+  logOut(){
+    const user =this._loginService.getLocalStorage('user')
+    if(user){
+      this._loginService.clearLocalStorage('user')
+      this.productsPanelEnable=false;
+    }
   }
 }

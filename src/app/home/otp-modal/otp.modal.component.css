@@ -1,4 +1,14 @@
 
-.ng-otp-input-wrapper{
+.wrapper{
   display: flex;
+  justify-content: space-around;
+}
+
+
+.otp-input{
+  margin-right: 0px!important;
+}
+
+h1{
+  margin: 0px;
 }

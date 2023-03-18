@@ -20,6 +20,10 @@ export class LoginPanelService{
     sessionStorage.setItem(key,strigify);
   }
 
+  clearLocalStorage(value:any){
+    sessionStorage.removeItem(value)
+  }
+
   getLocalStorage(key:string){
     const userExist = sessionStorage.getItem(key);
     if(userExist){

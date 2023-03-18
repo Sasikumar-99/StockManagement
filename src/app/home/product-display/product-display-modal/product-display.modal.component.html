@@ -1,53 +1,47 @@
 <form [formGroup]="productsAdd" (ngSubmit)="productsSubmit()">
-  <div *ngIf="!Editproducts else update">
-    <h2 class="pb-0 mb-0" mat-dialog-title>Add Products</h2>
-  </div>
-  <ng-template #update>
-    <h2 class="pb-0 mb-0" mat-dialog-title>Update Products</h2>
-  </ng-template>
-  <mat-dialog-content  class="mat-typography d-flex flex-column justify-content-around align-items-center">
-  <div>
-        <mat-form-field class="example-full-width" appearance="outline">
-        <mat-label>Product Name</mat-label>
-        <input type="text" matInput formControlName="productName" placeholder="Name">
-        <mat-error *ngIf="productName?.hasError('required')">
-          product Name is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Selling Price</mat-label>
-    <input type="text" matInput formControlName="sellingPrice" placeholder="Selling Price">
-    <mat-error *ngIf="sellingPrice?.hasError('required')">
-      Selling Price is <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
-</div>
-<div>
-  <mat-form-field class="example-full-width" appearance="outline">
-  <mat-label>Received Price</mat-label>
-  <input type="text" matInput formControlName="receivedPrice" placeholder="Received Price">
-  <mat-error *ngIf="receivedPrice?.hasError('required')">
-    Received Price is <strong>required</strong>
-  </mat-error>
-</mat-form-field>
-</div>
-<div>
-  <mat-form-field class="example-full-width" appearance="outline">
-  <mat-label>Quantity(units)</mat-label>
-  <input type="number" matInput formControlName="quantity" placeholder="Quantity">
-  <mat-error *ngIf="quantity?.hasError('required')">
-    quantity is <strong>required</strong>
-  </mat-error>
-</mat-form-field>
-</div>
-  </mat-dialog-content>
-  <mat-dialog-actions class="justify-content-end">
-    <ion-button mat-dialog-close>Cancel</ion-button>
-    <ion-button *ngIf="Editproducts else submit" type="submit" >Update</ion-button>
-    <ng-template #submit>
-      <ion-button type="submit" >Submit</ion-button>
-    </ng-template>
-  </mat-dialog-actions>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      </ion-buttons>
+      <ion-title>
+        <div>
+          <h2 class="pb-0 mb-0" mat-dialog-title>{{!Editproducts?'Add Products':'Update Products'}}</h2>
+        </div>
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button type="submit">{{!Editproducts?'Submit':'Update'}}</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding d-flex justify-content-center align-items-center">
+      <div>
+        <ion-item>
+          <ion-label position="floating">Product Name</ion-label>
+          <ion-input type="text" formControlName="productName"></ion-input>
+          <ion-note slot="error" *ngIf="productName?.hasError('required') && productName?.touched" >product Name is <strong>required</strong></ion-note>
+        </ion-item>
+      </div>
+      <div>
+        <ion-item>
+          <ion-label position="floating">Selling Price</ion-label>
+          <ion-input type="text" formControlName="sellingPrice"></ion-input>
+          <ion-note slot="error" *ngIf="sellingPrice?.hasError('required') && sellingPrice?.touched " >Selling Price is <strong>required</strong></ion-note>
+        </ion-item>
+    </div>
+    <div>
+      <ion-item>
+        <ion-label position="floating">Received Price</ion-label>
+        <ion-input type="text" formControlName="receivedPrice"></ion-input>
+        <ion-note slot="error" *ngIf="receivedPrice?.hasError('required') && receivedPrice?.touched" >Received Price is <strong>required</strong></ion-note>
+      </ion-item>
+    </div>
+    <div>
+      <ion-item>
+        <ion-label position="floating">Quantity(units)</ion-label>
+        <ion-input type="number" formControlName="quantity"></ion-input>
+        <ion-note slot="error" *ngIf="quantity?.hasError('required') && quantity?.touched" >quantity is <strong>required</strong></ion-note>
+      </ion-item>
+    </div>
+  </ion-content>
 </form>

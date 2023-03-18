@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
+import { ModalController } from "@ionic/angular";
 import { ToastrService } from "ngx-toastr";
 import { LoginPanelService } from "../login-panel/login-panel.service";
 import { OtpModal } from "../otp-modal/otp.modal.component";
@@ -16,14 +17,21 @@ import { ProductService } from "../product-display/product.service";
 export class Navbar {
   toggleDone!:FormControl
   constructor(public dialog: MatDialog,private _productService:ProductService,
-    private _loginService:LoginPanelService,private _toaster:ToastrService ) {
+    private _loginService:LoginPanelService,private _toaster:ToastrService,private modalCtrl:ModalController ) {
       this.toggleDone=new FormControl(false)
     }
 
 
-  addProducts() {
-        const dialogRef = this.dialog.open(ProductDisplayModal);
-        dialogRef.afterClosed().subscribe(result => {
+  async addProducts() {
+        // const dialogRef = this.dialog.open(ProductDisplayModal);
+        const modal = await this.modalCtrl.create({
+          component: ProductDisplayModal,
+        });
+        modal.present();
+        if(modal){
+          this._productService.emitEditingData(false)
+        }
+       await modal.onWillDismiss().then(result => {
           this._loginService.dismissLoading();
           this._productService.emitSubject(true);
         });

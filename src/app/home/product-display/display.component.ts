@@ -7,6 +7,7 @@ import { LoginPanelService } from "../login-panel/login-panel.service";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
 import { ProductDisplayModal } from "./product-display-modal/product-display.modal.component";
+import { ModalController } from "@ionic/angular";
 
 export interface UserData {
   productName: string;
@@ -32,7 +33,7 @@ export class ProductDisplay implements AfterViewInit {
    tableDisplay:any
    tableEditable!:boolean
   constructor (private _productService:ProductService,
-    private _loginService:LoginPanelService,private _toaster:ToastrService,private matDialog:MatDialog){
+    private _loginService:LoginPanelService,private _toaster:ToastrService,private matDialog:MatDialog,private modalCtrl:ModalController){
       this.tableEditable = false;
   }
   applyFilter(event: Event) {
@@ -73,8 +74,22 @@ export class ProductDisplay implements AfterViewInit {
     })
   }
 
-  EditProduct(products:any,productIndex:any){
-    this.matDialog.open(ProductDisplayModal,{data:{products:products,productItemIndex:productIndex}})
+ async EditProduct(products:any,productIndex:any){
+  const data = {products:products,productItemIndex:productIndex}
+  // await this._productService.emitEditingData(data)
+  const modal = await this.modalCtrl.create({
+    component: ProductDisplayModal,
+    componentProps:{'data':data},
+  });
+  modal.present();
+  if(modal){
+
+  }
+ await modal.onWillDismiss().then(result => {
+    this._loginService.dismissLoading();
+    this._productService.emitSubject(true);
+  });
+    // this.matDialog.open(ProductDisplayModal,{data:{products:products,productItemIndex:productIndex}})
   }
 
   deleteProduct(productItemIndex:any){
@@ -95,5 +110,10 @@ export class ProductDisplay implements AfterViewInit {
   }
 
   assignPages(event:any){
+  }
+
+  qrCodeClick(index:number){
+    console.log(index);
+
   }
 }

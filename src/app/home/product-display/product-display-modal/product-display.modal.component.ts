@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Inject } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { NavParams } from '@ionic/angular';
+import { ModalController } from "@ionic/angular";
 import { ToastrService } from "ngx-toastr";
 import { LoginPanelService } from "../../login-panel/login-panel.service";
 import { ProductService } from "../product.service";
@@ -14,10 +15,11 @@ import { ProductService } from "../product.service";
 export class ProductDisplayModal implements AfterViewInit {
   productsAdd!:FormGroup
   Editproducts:boolean
-  constructor(private _productService:ProductService,
+  data : any
+  constructor(private _productService:ProductService,private modalCtrl: ModalController,
     private _toaster:ToastrService,
-    private loginService:LoginPanelService,
-    @Inject(MAT_DIALOG_DATA) public data:any){
+    private navParams: NavParams,
+    private loginService:LoginPanelService){
     this.productsAdd = new FormGroup({
       productName : new FormControl('',Validators.required),
       sellingPrice : new FormControl('',Validators.required),
@@ -41,10 +43,15 @@ export class ProductDisplayModal implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.data?this.Editproducts=true:this.Editproducts=false;
-    if(this.Editproducts){
-      this.productsAdd.patchValue(this.data.products);
-    }
+    this.data =  this.navParams.get('data')
+      if(this.data){
+        this.Editproducts=true
+      }else{
+        this.Editproducts=false
+      }
+      if(this.Editproducts){
+        this.productsAdd.patchValue(this.data.products);
+      }
   }
 
   productsSubmit(){
@@ -82,5 +89,9 @@ export class ProductDisplayModal implements AfterViewInit {
         }
       })
     }
+  }
+
+  cancel() {
+    return this.modalCtrl.dismiss(null, 'cancel');
   }
 }

@@ -8,7 +8,6 @@
     <div>
       <div class="d-flex justify-content-center align-items-center flex-column-reverse">
         <ion-toggle [formControl]="toggleDone" (ionChange)="secretKeyEnabled($event)" [enableOnOffLabels]="true" color="dark"></ion-toggle>
-        <span>Enable To Set SecretKey</span>
       </div>
     </div>
     <div>
@@ -16,5 +15,8 @@
         <mat-icon>add_box</mat-icon>
       </button>
     </div>
+  </div>
+  <div class="d-flex justify-content-around align-items-center">
+    <span>Enable To Set SecretKey</span>
   </div>
 </div>

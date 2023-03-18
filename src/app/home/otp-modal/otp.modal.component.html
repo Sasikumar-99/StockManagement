@@ -1,8 +1,13 @@
-<h1 mat-dialog-title>Enter Your Secret Key</h1>
-<div mat-dialog-content>
-<ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:10}"></ng-otp-input>
-</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-  <button mat-button mat-dialog-close (click)="saveSecretKey()">Set Secret Key</button>
+<div>
+  <h1 class="m-0" mat-dialog-title>Enter Your Secret Key</h1>
+  <div >
+  <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:10}"></ng-otp-input>
+  </div>
+  <div class="d-flex justify-content-around">
+    <h3 class="m-0" *ngFor="let secret of _secretKey">{{secret.key}}</h3>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button mat-dialog-close (click)="saveSecretKey()">Set Secret Key</button>
+  </div>
 </div>

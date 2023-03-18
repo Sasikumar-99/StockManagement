@@ -1,7 +1,7 @@
 <div>
   <ion-searchbar animated="true" placeholder="Type to Search.." (keyup)="applyFilter($event)" #input></ion-searchbar>
 </div>
-<div class="mat-elevation-z8">
+<div>
   <mat-table [dataSource]="dataSource" matSort style="overflow: auto;" >
     <!-- Position Column -->
     <ng-container matColumnDef="productName">
@@ -19,7 +19,7 @@
         <span class="ellipsis" matTooltip="Selling Price">Selling Price</span>
         </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <span class="ellipsis" [matTooltip]="element.sellingPrice">{{element.sellingPrice}}</span>
+        <span class="ellipsis" [matTooltip]="element.sellingPrice">{{element.sellingPrice | currency:'INR':'symbol':'0.1-1'}}</span>
          </mat-cell>
     </ng-container>
 
@@ -66,7 +66,7 @@
         <span class="ellipsis" matTooltip="Code">Code</span>
       </mat-header-cell>
       <mat-cell  *matCellDef="let row; let i=index">
-        <qrcode [qrdata]="row._id" [width]="65" [errorCorrectionLevel]="'M'"></qrcode>
+        <qrcode (click)="qrCodeClick(i)" [qrdata]="row._id" [width]="65" [errorCorrectionLevel]="'M'"></qrcode>
       </mat-cell>
     </ng-container>
 
