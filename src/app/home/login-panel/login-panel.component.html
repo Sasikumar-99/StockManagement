@@ -1,36 +1,37 @@
 <div class="p-4 border border-primary rounded d-flex justify-content-center">
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <div class="mb-3">
-        <ion-title>
-          <div>
-            <h2 class="pb-0 mb-0" mat-dialog-title>{{isLogin?'Login':'Register'}}</h2>
-          </div>
-        </ion-title>
+    <div class="text-center">
+      <h2 class="pb-0 mb-0" mat-dialog-title>{{isLogin?'Login':'Register'}}</h2>
     </div>
     <div>
       <ion-item fill="solid">
         <ion-label position="floating">User Name</ion-label>
-        <ion-input formControlName="userName" placeholder="user name" ></ion-input>
-        <ion-note slot="error" *ngIf="userName?.hasError('required') && userName?.touched">User Name is <strong>required</strong></ion-note>
+        <ion-input formControlName="userName" placeholder="user name"></ion-input>
+        <ion-note slot="error" *ngIf="userName?.hasError('required') && userName?.touched">User Name is
+          <strong>required</strong></ion-note>
       </ion-item>
     </div>
     <div>
       <ion-item fill="solid">
         <ion-label position="floating">Password</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
-        <ion-note slot="error" *ngIf="password?.hasError('required') && password?.touched ">password is <strong>required</strong></ion-note>
+        <ion-note slot="error" *ngIf="password?.hasError('required') && password?.touched ">password is
+          <strong>required</strong></ion-note>
       </ion-item>
     </div>
     <div class="mt-2">
-      <a href="javascript:void(0);" *ngIf="isLogin" (click)="this.loginForm.get('IsRegister')?.setValue(true);this.loginForm.get('Islogin')?.setValue(false)">Need one register here..</a>
-      <a href="javascript:void(0);" *ngIf="isRegister" (click)="this.loginForm.get('Islogin')?.setValue(true);this.loginForm.get('IsRegister')?.setValue(false)">Back to Login</a>
+      <a href="javascript:void(0);" *ngIf="isLogin"
+        (click)="this.loginForm.get('IsRegister')?.setValue(true);this.loginForm.get('Islogin')?.setValue(false)">Need
+        one register here..</a>
+      <a href="javascript:void(0);" *ngIf="isRegister"
+        (click)="this.loginForm.get('Islogin')?.setValue(true);this.loginForm.get('IsRegister')?.setValue(false)">Back
+        to Login</a>
     </div>
     <div class="d-flex justify-content-between align-items-center mt-2">
       <ion-button color="success" fill="outline" type="submit">{{isLogin?'Login':'Register'}}</ion-button>
       <button mat-icon-button color="warn" type="button" (click)="resetFormField()"><mat-icon>
-        refresh
-      </mat-icon></button>
+          refresh
+        </mat-icon></button>
     </div>
   </form>
 </div>
-
