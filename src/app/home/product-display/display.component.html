@@ -1,88 +1,93 @@
 <div>
-  <ion-searchbar animated="true" placeholder="Type to Search.." (keyup)="applyFilter($event)" #input></ion-searchbar>
-</div>
-<div>
-  <mat-table [dataSource]="dataSource" matSort style="overflow: auto;" >
-    <!-- Position Column -->
-    <ng-container matColumnDef="productName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Product Name">Product Name</span>
-        </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <span class="ellipsis" [matTooltip]="element.productName"> {{element.productName}}</span>
-      </mat-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="sellingPrice">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Selling Price">Selling Price</span>
-        </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <span class="ellipsis" [matTooltip]="element.sellingPrice">{{element.sellingPrice | currency:'INR':'symbol':'0.1-1'}}</span>
-         </mat-cell>
-    </ng-container>
-
-    <!-- Weight Column -->
-    <ng-container matColumnDef="receivedPrice">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Received Price">Received Price</span>
-         </mat-header-cell>
-      <mat-cell appSecretKey *matCellDef="let element">
-        <span class="ellipsis" [matTooltip]="element.receivedPrice">{{element.receivedPrice}}</span>
-      </mat-cell>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="quantity">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Quantity">Quantity</span>
-          </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <span class="ellipsis" [matTooltip]="element.quantity">{{element.quantity}}</span>
-        </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Edit">Edit</span>
-       </mat-header-cell>
-      <mat-cell  *matCellDef="let row; let i=index">
-          <mat-icon color="primary" (click)="EditProduct(row,i)">edit</mat-icon>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="delete">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Delete">Delete</span>
-      </mat-header-cell>
-      <mat-cell  *matCellDef="let row; let i=index">
-          <mat-icon color="warn" (click)="deleteProduct(i)">delete</mat-icon>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="code">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        <span class="ellipsis" matTooltip="Code">Code</span>
-      </mat-header-cell>
-      <mat-cell  *matCellDef="let row; let i=index">
-        <qrcode (click)="qrCodeClick(i)" [qrdata]="row._id" [width]="65" [errorCorrectionLevel]="'M'"></qrcode>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="paginator">
-      <mat-footer-cell *matFooterCellDef class="px-0">
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" (page)="assignPages($event)" aria-label="Select page of users"></mat-paginator>
-      </mat-footer-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    <mat-footer-row *matFooterRowDef="displayedFooter;sticky:true"></mat-footer-row>
-      <!-- Row shown when there is no matching data. -->
-  <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4"><strong>No products to display..</strong></td>
-  </tr>
-  </mat-table>
-
+  <div>
+    <app-navbar></app-navbar>
   </div>
+  <div>
+    <ion-searchbar animated="true" placeholder="Type to Search.." (keyup)="applyFilter($event)" #input></ion-searchbar>
+  </div>
+  <div>
+    <mat-table [dataSource]="dataSource" matSort style="overflow: auto;" >
+      <!-- Position Column -->
+      <ng-container matColumnDef="productName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Product Name">Product Name</span>
+          </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="ellipsis" [matTooltip]="element.productName"> {{element.productName}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="sellingPrice">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Selling Price">Selling Price</span>
+          </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="ellipsis" [matTooltip]="element.sellingPrice">{{element.sellingPrice | currency:'INR':'symbol':'0.1-1'}}</span>
+           </mat-cell>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="receivedPrice">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Received Price">Received Price</span>
+           </mat-header-cell>
+        <mat-cell appSecretKey *matCellDef="let element">
+          <span class="ellipsis" [matTooltip]="element.receivedPrice">{{element.receivedPrice}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Quantity">Quantity</span>
+            </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="ellipsis" [matTooltip]="element.quantity">{{element.quantity}}</span>
+          </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Edit">Edit</span>
+         </mat-header-cell>
+        <mat-cell  *matCellDef="let row; let i=index">
+            <mat-icon color="primary" (click)="EditProduct(row,i)">edit</mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Delete">Delete</span>
+        </mat-header-cell>
+        <mat-cell  *matCellDef="let row; let i=index">
+            <mat-icon color="warn" (click)="deleteProduct(i)">delete</mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Code">Code</span>
+        </mat-header-cell>
+        <mat-cell  *matCellDef="let row; let i=index">
+          <qrcode (click)="qrCodeClick(i)" [qrdata]="row._id" [width]="65" [errorCorrectionLevel]="'M'"></qrcode>
+        </mat-cell>
+      </ng-container> -->
+
+      <ng-container matColumnDef="paginator">
+        <mat-footer-cell *matFooterCellDef class="px-0">
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" (page)="assignPages($event)" aria-label="Select page of users"></mat-paginator>
+        </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="displayedFooter;sticky:true"></mat-footer-row>
+        <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4"><strong>No products to display..</strong></td>
+    </tr>
+    </mat-table>
+
+    </div>
+</div>

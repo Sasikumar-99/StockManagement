@@ -61,4 +61,7 @@ export class Navbar {
   openDialog(){
 
   }
+  openChat(){
+
+  }
 }

@@ -24,7 +24,7 @@ export interface UserData {
 })
 
 export class ProductDisplay implements AfterViewInit {
-  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete','code'];
+  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete'];
   displayedFooter:string[]=['paginator']
   dataSource !: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -1,3 +1,4 @@
+import { ChatAppService } from './chat-app/chat-app.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -51,6 +52,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatTooltipModule
   ],
   declarations: [Spinner,SecretKeyDirective,HomePage,Navbar,ProductDisplay,LoginPanel,ProductDisplayModal,OtpModal],
-  providers : [ProductService,LoginPanelService]
+  providers : [ProductService,LoginPanelService,ChatAppService]
 })
 export class HomePageModule {}

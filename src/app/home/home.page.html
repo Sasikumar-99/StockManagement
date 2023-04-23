@@ -4,7 +4,9 @@
       <ion-title>Menu Content</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">This is the menu content.</ion-content>
+  <ion-content class="ion-padding">
+    menu item
+  </ion-content>
 </ion-menu>
 
 <div class="ion-page" id="main-content">
@@ -15,32 +17,42 @@
       </ion-buttons>
       <ion-header [translucent]="true">
         <ion-toolbar>
-            <div class="d-flex justify-content-between align-items-center">
-                  <mat-card-title>
-                    Guru Stock Management
-                  </mat-card-title>
-                <mat-card-title>
-                  <button type="button" (click)="logOut()" mat-icon-button>
-                    <mat-icon>logout</mat-icon>
-                  </button>
-                </mat-card-title>
-            </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <mat-card-title>
+              Guru Stock Management
+            </mat-card-title>
+            <mat-card-title>
+              <button type="button" (click)="logOut()" mat-icon-button>
+                <mat-icon>logout</mat-icon>
+              </button>
+            </mat-card-title>
+          </div>
         </ion-toolbar>
       </ion-header>
     </ion-toolbar>
   </ion-header>
-  <ion-content [fullscreen]="true">
+  <ion-content>
     <div class="row h-100 background-img">
       <div *ngIf="!productsPanelEnable" class="d-flex justify-content-center align-items-center">
-        <div class="">
+        <div>
           <app-login-panel (isLoginSuccess)="loginSuccess($event)"></app-login-panel>
         </div>
       </div>
-      <div *ngIf="productsPanelEnable">
-        <div class="px-2 displaywrapper">
-          <app-navbar></app-navbar>
-          <app-display></app-display>
-        </div>
+      <div *ngIf="productsPanelEnable" >
+        <router-outlet></router-outlet>
+        <ion-fab class="d-none" slot="fixed" vertical="bottom" horizontal="end">
+          <ion-fab-button>
+            <ion-icon name="chevron-up-circle"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-list side="top">
+            <ion-fab-button (click)="navigateTo('productDisplay')">
+              <ion-icon name="home"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button (click)="navigateTo('chatApp')">
+              <ion-icon name="chatbubbles"></ion-icon>
+            </ion-fab-button>
+          </ion-fab-list>
+        </ion-fab>
       </div>
     </div>
   </ion-content>

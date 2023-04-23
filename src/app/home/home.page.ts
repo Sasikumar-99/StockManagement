@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginPanelService } from './login-panel/login-panel.service';
 
 
@@ -8,9 +10,11 @@ import { LoginPanelService } from './login-panel/login-panel.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
+  navigation!:FormControl
   productsPanelEnable:Boolean = false
-  constructor(private _loginService:LoginPanelService) {}
+  constructor(private _loginService:LoginPanelService,public _router:Router) {
+    this.navigation= new FormControl('productDisplay')
+  }
 
   loginSuccess(event:any){
     this.productsPanelEnable = event
@@ -22,5 +26,18 @@ export class HomePage {
       this._loginService.clearLocalStorage('user')
       this.productsPanelEnable=false;
     }
+  }
+
+  // onRadioChange(event:any){
+  //     console.log(this.navigation.value);
+  //     if(this.navigation.value =='home'){
+  //       this._router.navigate(['home/productDisplay'])
+  //     }else{
+  //       this._router.navigate(['home/chatApp'])
+  //     }
+  // }
+
+  navigateTo(componentName:string){
+    this._router.navigate([`home/${componentName}`])
   }
 }

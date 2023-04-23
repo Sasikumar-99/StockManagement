@@ -38,7 +38,7 @@ export class LoginPanelService{
   }
 
   async showLoading() {
-    this._loading = this.dialog.open(Spinner)
+    this._loading = this.dialog.open(Spinner,{disableClose:true})
   }
   async dismissLoading(){
     await this._loading.close();

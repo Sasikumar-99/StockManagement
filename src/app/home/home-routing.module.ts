@@ -1,11 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ChatAppComponent } from './chat-app/chat-app.component';
 import { HomePage } from './home.page';
-
+import {ProductDisplay} from './product-display/display.component'
 const routes: Routes = [
   {
     path: '',
     component: HomePage,
+    children:[
+      {
+        path:'',
+        redirectTo:'productDisplay',
+        pathMatch:'full'
+      },
+      {
+        path:'productDisplay',
+        component:ProductDisplay
+      },
+      {
+        path:'chatApp',
+        loadChildren: () => import('./chat-app/chatApp.module').then( m => m.ChatApp)
+      }
+    ]
   }
 ];
 
