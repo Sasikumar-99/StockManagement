@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -8,7 +8,9 @@ import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
 import { ProductDisplayModal } from "./product-display-modal/product-display.modal.component";
 import { ModalController } from "@ionic/angular";
-
+import { DeleteConfirmationComponent } from "../delete-confirmation/delete-confirmation.component";
+import { FormControl } from "@angular/forms";
+import * as moment from "moment";
 export interface UserData {
   productName: string;
   sellingPrice: string;
@@ -18,102 +20,248 @@ export interface UserData {
 }
 
 @Component({
-  selector : 'app-display',
-  templateUrl : 'display.component.html',
-  styleUrls : ['display.component.css']
+  selector: 'app-display',
+  templateUrl: 'display.component.html',
+  styleUrls: ['display.component.css'],
 })
-
-export class ProductDisplay implements AfterViewInit {
-  displayedColumns: string[] = ['productName', 'sellingPrice', 'receivedPrice', 'quantity','edit','delete'];
-  displayedFooter:string[]=['paginator']
-  dataSource !: MatTableDataSource<UserData>;
+export class ProductDisplay implements AfterViewInit, OnInit {
+  displayedColumns: string[] = [
+    'productName',
+    'sellingPrice',
+    'receivedPrice',
+    'quantity',
+    'category',
+    'edit',
+    'delete',
+  ];
+  displayedFooter: string[] = ['paginator'];
+  dataSource!: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-   user:any
-   tableDisplay:any
-   tableEditable!:boolean
-  constructor (private _productService:ProductService,
-    private _loginService:LoginPanelService,private _toaster:ToastrService,private matDialog:MatDialog,private modalCtrl:ModalController){
-      this.tableEditable = false;
+  user: any;
+  tableDisplay: any;
+  tableEditable!: boolean;
+  categorySelected: FormControl = new FormControl('');
+  constructor(
+    private _productService: ProductService,
+    private _loginService: LoginPanelService,
+    private _toaster: ToastrService,
+    private matDialog: MatDialog,
+    private modalCtrl: ModalController
+  ) {
+    this.tableEditable = false;
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.tableDisplay = this.dataSource.filteredData
+    this.tableDisplay = this.dataSource.filteredData;
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
-
-  ngAfterViewInit() {
+  ngOnInit(): void {
     this.user = this._loginService.getLocalStorage('user');
+  }
+  ngAfterViewInit() {
     this.getAllProducts();
-    this._productService.productValueUpdated.subscribe(value=>{
-      this.getAllProducts()
+    this._productService.productValueUpdated.subscribe((value) => {
+      this.getAllProducts();
+    });
+  }
+
+  getAllProducts() {
+    this._productService.getProducts(this.user.productsId).subscribe(
+      (value: any) => {
+        if (!value.error) {
+          this.tableDisplay = value.body.products;
+          this.selectedCategoryChange();
+        } else {
+          this._toaster.error(value.message);
+        }
+        this._loginService.dismissLoading();
+      },
+      (rej) => {
+        if (rej) {
+          this._loginService.dismissLoading();
+          this._toaster.error(rej.error.message);
+        }
+        this._loginService.dismissLoading();
+      }
+    );
+  }
+
+  async EditProduct(products: any, productIndex: any) {
+    const data = { products: products, productItemIndex: productIndex };
+    const modal = await this.modalCtrl.create({
+      component: ProductDisplayModal,
+      componentProps: { data: data },
+    });
+    modal.present();
+    if (modal) {
+    }
+    await modal.onWillDismiss().then((result) => {
+     this._loginService.showLoading();
+      this._productService.emitSubject(true);
+    });
+  }
+
+  deleteProduct(productItemIndex: any) {
+    const dialogref = this.matDialog.open(DeleteConfirmationComponent, {
+      data: this.tableDisplay[productItemIndex],
+    });
+
+    dialogref.afterClosed().subscribe((dialogData) => {
+      if (dialogData) {
+        if (dialogData.event.includes('delete')) {
+          this._productService
+            .deleteProduct(this.user.productsId, productItemIndex)
+            .subscribe(
+              (value: any) => {
+                if (value.error) {
+                  this._toaster.error(value.message);
+                } else {
+                  this._toaster.success(value.message);
+                  this._productService.emitSubject(true);
+                }
+                this._loginService.dismissLoading();
+              },
+              (rej) => {
+                this._toaster.error(rej.error.message);
+                this._loginService.dismissLoading();
+              }
+            );
+        } else if (dialogData.event.includes('update')) {
+          if(dialogData.data.quantity !==0){
+            this._productService
+            .updateProduct(this.user.productsId, productItemIndex, dialogData.data)
+            .subscribe(
+              (value: any) => {
+                if (!value.error) {
+                  this._toaster.success(value.message);
+                  this._productService.emitSubject(true);
+                  this.addReports(productItemIndex,dialogData.soldCount)
+                } else {
+                  this._toaster.error(value.message);
+                }
+                this._loginService.dismissLoading();
+              },
+              (rej) => {
+                if (rej) {
+                  this._toaster.error(rej.error.message);
+                this._loginService.dismissLoading();
+                }
+              }
+            );
+          }else{
+            this._productService
+            .deleteProduct(this.user.productsId, productItemIndex)
+            .subscribe(
+              (value: any) => {
+                if (value.error) {
+                  this._toaster.error(value.message);
+                } else {
+                  this._toaster.success(value.message);
+                  this._productService.emitSubject(true);
+                  this.addReports(productItemIndex,dialogData.soldCount)
+                }
+                this._loginService.dismissLoading();
+              },
+              (rej) => {
+                this._toaster.error(rej.error.message);
+                this._loginService.dismissLoading();
+              }
+            );
+          }
+        }
+      }
+    });
+  }
+
+  addReports(index:number,soldQuantity:number){
+    const receivedPrice = parseFloat(this.tableDisplay[index].receivedPrice)*soldQuantity;
+    const soldPrice = parseFloat(this.tableDisplay[index].sellingPrice)*soldQuantity;
+    const soldData = {
+      category:this.tableDisplay[index].category,
+      productName:this.tableDisplay[index].productName,
+      soldCount:soldQuantity,
+      receivedPrice:receivedPrice,
+      soldPrice:soldPrice,
+      profit : soldPrice-receivedPrice
+    }
+    const soldObject ={
+      date:moment(new Date()).format('DD/MM/yyyy'),
+      soldData:[soldData]
+    }
+    this._productService.getReports(this.user.reportId).subscribe((reports:any)=>{
+      if(!reports.error){
+        if(reports.body.reportsArchive.length>0){
+          const existingReport = reports.body.reportsArchive.find((reports:any) => reports.date === soldObject.date);
+          const existingReportIndex = reports.body.reportsArchive.findIndex((reports:any) => reports.date === soldObject.date);
+          if(existingReport && existingReportIndex!==-1){
+            const soldDataExists = existingReport.soldData.find((data:any)=>data.productName.toLowerCase() === soldData.productName.toLowerCase());
+            const soldDataExistsIndex = existingReport.soldData.findIndex((data:any)=>data.productName.toLowerCase() === soldData.productName.toLowerCase());
+            if(soldDataExists && soldDataExistsIndex!==-1){
+              const newSoldData = {...soldDataExists};
+              newSoldData.soldCount = soldDataExists.soldCount + soldData.soldCount;
+              newSoldData.receivedPrice = soldDataExists.receivedPrice + soldData.receivedPrice;
+              newSoldData.soldPrice = soldDataExists.soldPrice + soldData.soldPrice;
+              newSoldData.profit = soldDataExists.profit + soldData.profit;
+              existingReport.soldData.splice(soldDataExistsIndex,1,newSoldData);
+              reports.body.reportsArchive.splice(existingReportIndex,1,existingReport);
+              this.updateReport(reports.body.reportsArchive);
+            }else{
+              existingReport.soldData.push(soldData);
+              this.updateReport(reports.body.reportsArchive);
+            }
+          }else{
+            reports.body.reportsArchive.push(soldObject);
+            this.updateReport(reports.body.reportsArchive)
+          }
+        }else{
+          reports.body.reportsArchive.push(soldObject);
+          this.updateReport(reports.body.reportsArchive)
+        }
+      }
     })
   }
 
-  getAllProducts(){
-    this._loginService.showLoading();
-    this._productService.getProducts(this.user.productsId).subscribe((value:any) => {
-      if(!value.error){
-        this._loginService.dismissLoading();
-        this.tableDisplay = value.body.products
-        this.dataSource = new MatTableDataSource(value.body.products)
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+  updateReport(reportArchive:any[]){
+    this._productService.addReports(this.user.reportId,reportArchive).subscribe((updatedReports:any)=>{
+      if(updatedReports.error){
+        this._toaster.error(updatedReports.message);
       }else{
-        this._loginService.dismissLoading();
-        this._toaster.error(value.message)
-      }
-    },(rej)=>{
-      if(rej){
-        this._loginService.dismissLoading();
-        this._toaster.error(rej.error.message)
+        this._toaster.success(updatedReports.message);
       }
     })
   }
+  assignPages(event: any) {}
 
- async EditProduct(products:any,productIndex:any){
-  const data = {products:products,productItemIndex:productIndex}
-  // await this._productService.emitEditingData(data)
-  const modal = await this.modalCtrl.create({
-    component: ProductDisplayModal,
-    componentProps:{'data':data},
-  });
-  modal.present();
-  if(modal){
-
-  }
- await modal.onWillDismiss().then(result => {
-    this._loginService.dismissLoading();
-    this._productService.emitSubject(true);
-  });
-    // this.matDialog.open(ProductDisplayModal,{data:{products:products,productItemIndex:productIndex}})
-  }
-
-  deleteProduct(productItemIndex:any){
-    this._loginService.showLoading();
-    this._productService.deleteProduct(this.user.productsId,productItemIndex).subscribe((value:any)=> {
-      if(value.error){
-        this._loginService.dismissLoading();
-        this._toaster.error(value.message)
-      }else{
-        this._loginService.dismissLoading();
-        this._toaster.success(value.message)
-        this.getAllProducts()
-      }
-    },(rej)=>{
-      this._loginService.dismissLoading();
-      this._toaster.error(rej.error.message)
-    })
-  }
-
-  assignPages(event:any){
-  }
-
-  qrCodeClick(index:number){
+  qrCodeClick(index: number) {
     console.log(index);
+  }
 
+  categoryClicked() {
+    const check = document.getElementById('categorySelect');
+    check?.click();
+  }
+
+  selectedCategoryChange() {
+    let newFiltered:any = []
+    const forFiltering = [...this.tableDisplay];
+    if(this.categorySelected.value.length){
+      this.categorySelected.value.forEach((value: any) => {
+        forFiltering.forEach((tableValue:any)=>{
+          if(tableValue.category === value){
+            newFiltered.push(tableValue)
+          }
+        })
+      });
+    }else{
+      newFiltered = forFiltering
+    }
+
+    this.dataSource = new MatTableDataSource(newFiltered);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 }

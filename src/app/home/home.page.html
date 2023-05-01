@@ -4,15 +4,38 @@
       <ion-title>Menu Content</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
-    menu item
-  </ion-content>
+  <ion-radio-group class="h-100" [(ngModel)]="menuGroup" (ngModelChange)="navigateValue()">
+    <ion-item>
+      <ion-label>
+        <code>Display Products</code>
+      </ion-label>
+      <ion-radio value="home/productDisplay"></ion-radio>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label>
+        <code>Chat App</code>
+      </ion-label>
+      <ion-radio value="home/chatApp"></ion-radio>
+    </ion-item> -->
+    <ion-item>
+      <ion-label>
+        <code>Settings</code>
+      </ion-label>
+      <ion-radio value="home/settings"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <code>Reports</code>
+      </ion-label>
+      <ion-radio value="home/reports"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
 </ion-menu>
 
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start" *ngIf="productsPanelEnable">
+      <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-header [translucent]="true">
@@ -32,29 +55,9 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
-    <div class="h-100 background-img">
-      <div *ngIf="!productsPanelEnable" class="h-100 d-flex justify-content-center align-items-center">
-        <div>
-          <app-login-panel (isLoginSuccess)="loginSuccess($event)"></app-login-panel>
-        </div>
-      </div>
-      <div *ngIf="productsPanelEnable" >
+      <div>
         <router-outlet></router-outlet>
-        <ion-fab class="d-none" slot="fixed" vertical="bottom" horizontal="end">
-          <ion-fab-button>
-            <ion-icon name="chevron-up-circle"></ion-icon>
-          </ion-fab-button>
-          <ion-fab-list side="top">
-            <ion-fab-button (click)="navigateTo('productDisplay')">
-              <ion-icon name="home"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button (click)="navigateTo('chatApp')">
-              <ion-icon name="chatbubbles"></ion-icon>
-            </ion-fab-button>
-          </ion-fab-list>
-        </ion-fab>
       </div>
-    </div>
   </ion-content>
 </div>
 

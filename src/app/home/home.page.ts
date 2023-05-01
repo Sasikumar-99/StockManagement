@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginPanelService } from './login-panel/login-panel.service';
 
 
@@ -9,35 +9,25 @@ import { LoginPanelService } from './login-panel/login-panel.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  public menuGroup!:string
   navigation!:FormControl
-  productsPanelEnable:Boolean = false
-  constructor(private _loginService:LoginPanelService,public _router:Router) {
-    this.navigation= new FormControl('productDisplay')
+  constructor(private _loginService:LoginPanelService,public _router:Router,private _activatedRoute:ActivatedRoute) {
+    this.navigation= new FormControl()
   }
+ngOnInit(): void {
+  this.menuGroup = this._router.url
 
-  loginSuccess(event:any){
-    this.productsPanelEnable = event
-  }
-
+}
   logOut(){
     const user =this._loginService.getLocalStorage('user')
     if(user){
       this._loginService.clearLocalStorage('user')
-      this.productsPanelEnable=false;
+      this._router.navigate(['login'])
     }
   }
 
-  // onRadioChange(event:any){
-  //     console.log(this.navigation.value);
-  //     if(this.navigation.value =='home'){
-  //       this._router.navigate(['home/productDisplay'])
-  //     }else{
-  //       this._router.navigate(['home/chatApp'])
-  //     }
-  // }
-
-  navigateTo(componentName:string){
-    this._router.navigate([`home/${componentName}`])
+  navigateValue(){
+    this._router.navigate([`${this.menuGroup}`])
   }
 }

@@ -36,11 +36,16 @@ export class LoginPanelService{
   setSecretKey(id:string,body:any){
     return this._http.put(`${this._domain}updateUser/${id}`,body)
   }
+  setCategories(id:string,body:any){
+    return this._http.put(`${this._domain}updateCategories/${id}`,body)
+  }
 
   async showLoading() {
     this._loading = this.dialog.open(Spinner,{disableClose:true})
   }
   async dismissLoading(){
-    await this._loading.close();
+    if(this._loading){
+      await this._loading.close();
+    }
   }
 }

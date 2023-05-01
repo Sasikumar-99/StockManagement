@@ -1,9 +1,7 @@
-<div class="container">
+<div>
   <div class="d-flex justify-content-around align-items-center">
     <div>
-      <button (click)="refreshButton()" type="button" mat-icon-button>
-        <mat-icon>refresh</mat-icon>
-      </button>
+        <mat-icon (click)="refreshButton()">refresh</mat-icon>
     </div>
     <div>
       <div class="d-flex justify-content-center align-items-center flex-column-reverse">
@@ -11,12 +9,10 @@
       </div>
     </div>
     <div>
-      <button type="button" mat-icon-button (click)="addProducts()">
-        <mat-icon>add_box</mat-icon>
-      </button>
+        <mat-icon (click)="addProducts()">add_box</mat-icon>
     </div>
   </div>
-  <div class="d-flex justify-content-around align-items-center">
+  <div class="mt-2 d-flex justify-content-around align-items-center">
     <span>Enable To Set SecretKey</span>
   </div>
 </div>

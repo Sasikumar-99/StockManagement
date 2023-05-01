@@ -10,7 +10,7 @@
         </div>
       </ion-title>
       <ion-buttons slot="end">
-        <ion-button type="submit">{{!Editproducts?'Submit':'Update'}}</ion-button>
+        <ion-button [disabled]="productsAdd.invalid" type="submit">{{!Editproducts?'Submit':'Update'}}</ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -35,6 +35,18 @@
         <ion-input type="text" formControlName="receivedPrice"></ion-input>
         <ion-note slot="error" *ngIf="receivedPrice?.hasError('required') && receivedPrice?.touched" >Received Price is <strong>required</strong></ion-note>
       </ion-item>
+    </div>
+    <div>
+      <ion-list>
+        <ion-item>
+        <ion-label position="floating">Category</ion-label>
+          <ion-select aria-label="Category" interface="action-sheet" placeholder="Choose Category" formControlName="category">
+            <ng-container *ngFor="let category of user.categories">
+              <ion-select-option *ngIf="category.checked"  [value]="category.name">{{category.name}}</ion-select-option>
+            </ng-container>
+          </ion-select>
+        </ion-item>
+      </ion-list>
     </div>
     <div>
       <ion-item>

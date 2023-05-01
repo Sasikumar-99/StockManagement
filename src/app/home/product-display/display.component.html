@@ -1,11 +1,22 @@
 <div>
-  <div>
+  <div class="mt-2">
     <app-navbar></app-navbar>
   </div>
   <div>
-    <ion-searchbar animated="true" placeholder="Type to Search.." (keyup)="applyFilter($event)" #input></ion-searchbar>
+    <ion-searchbar [animated]="true" placeholder="Type to Search.." (keyup)="applyFilter($event)" #input></ion-searchbar>
   </div>
   <div>
+    <ion-list class="p-0 m-0">
+      <ion-item>
+        <ion-select [formControl] = 'categorySelected' (ionChange)="selectedCategoryChange()" aria-label="category" [interface]="'popover'" placeholder="Select all categories that apply" [multiple]="true">
+          <ng-container *ngFor="let category of user.categories;let i = index">
+            <ion-select-option *ngIf="category.checked" [value]="category.name">{{category.name}}</ion-select-option>
+          </ng-container>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div class="mt-1">
     <mat-table [dataSource]="dataSource" matSort style="overflow: auto;" >
       <!-- Position Column -->
       <ng-container matColumnDef="productName">
@@ -32,8 +43,8 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>
           <span class="ellipsis" matTooltip="Received Price">Received Price</span>
            </mat-header-cell>
-        <mat-cell appSecretKey *matCellDef="let element">
-          <span class="ellipsis" [matTooltip]="element.receivedPrice">{{element.receivedPrice}}</span>
+        <mat-cell *matCellDef="let element">
+          <span appSecretKey class="ellipsis" [matTooltip]="element.receivedPrice">{{element.receivedPrice}}</span>
         </mat-cell>
       </ng-container>
 
@@ -44,6 +55,15 @@
             </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <span class="ellipsis" [matTooltip]="element.quantity">{{element.quantity}}</span>
+          </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="ellipsis" matTooltip="Category">Category</span>
+            </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="ellipsis" [matTooltip]="element.category">{{element.category}}</span>
           </mat-cell>
       </ng-container>
 
@@ -61,7 +81,7 @@
           <span class="ellipsis" matTooltip="Delete">Delete</span>
         </mat-header-cell>
         <mat-cell  *matCellDef="let row; let i=index">
-            <mat-icon color="warn" (click)="deleteProduct(i)">delete</mat-icon>
+            <mat-icon color="warn" id="present-alert" (click)="deleteProduct(i)">delete</mat-icon>
         </mat-cell>
       </ng-container>
 
@@ -88,6 +108,5 @@
       <td class="mat-cell" colspan="4"><strong>No products to display..</strong></td>
     </tr>
     </mat-table>
-
     </div>
 </div>

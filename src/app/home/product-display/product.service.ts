@@ -25,6 +25,9 @@ export class ProductService {
     return this._http.get(`${this._url}getAllProducts/${productId}`)
   }
 
+  getReports(reportId:string){
+    return this._http.get(`${this._url}getAllReports/${reportId}`)
+  }
   deleteProduct(productId:string,ProductItemIndex:any){
     return this._http.delete(`${this._url}deleteProducts/${productId}/${ProductItemIndex}`)
   }
@@ -41,5 +44,9 @@ export class ProductService {
     return new Promise((resolve,reject)=>{
       resolve(this._editValueEmitter.emit(value))
     })
+  }
+
+  addReports(reportId:string,reportData:any){
+    return this._http.post(`${this._url}reports/${reportId}`,reportData)
   }
 }

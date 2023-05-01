@@ -1,0 +1,41 @@
+ion-grid {
+  --ion-grid-column-padding: 10px;
+  border-collapse: collapse;
+  border-style: hidden;
+
+  ion-row:first-child {
+    background-color:  #2dd36f;
+    font-weight: bold;
+  }
+
+  ion-col {
+    border: 1px solid black;
+    border-bottom: 0;
+    border-right: 0;
+  }
+  ion-col:last-child {
+    border-right: 1px solid black;
+  }
+
+  ion-row:last-child {
+    border-bottom: 1px solid black;
+  }
+}
+
+mat-header-cell,mat-cell{
+  padding: 0px !important;
+  justify-content: center!important;
+  align-items: center!important;
+}
+
+mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+.example-viewport {
+  width: 100%;
+  height: calc( 100vh - 251px);
+}

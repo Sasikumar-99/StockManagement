@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject } from "@angular/core";
+import { AfterViewInit, Component, Inject, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NavParams } from '@ionic/angular';
 import { ModalController } from "@ionic/angular";
@@ -12,9 +12,10 @@ import { ProductService } from "../product.service";
   styleUrls : ['product-display.modal.component.css']
 })
 
-export class ProductDisplayModal implements AfterViewInit {
+export class ProductDisplayModal implements AfterViewInit,OnInit {
   productsAdd!:FormGroup
   Editproducts:boolean
+  user:any
   data : any
   constructor(private _productService:ProductService,private modalCtrl: ModalController,
     private _toaster:ToastrService,
@@ -24,11 +25,11 @@ export class ProductDisplayModal implements AfterViewInit {
       productName : new FormControl('',Validators.required),
       sellingPrice : new FormControl('',Validators.required),
       receivedPrice : new FormControl('',Validators.required),
+      category : new FormControl('',Validators.required),
       quantity : new FormControl('',Validators.required),
     })
     this.Editproducts = false
   }
-
   get productName(){
     return this.productsAdd.get('productName')
   }
@@ -38,10 +39,17 @@ export class ProductDisplayModal implements AfterViewInit {
   get receivedPrice(){
     return this.productsAdd.get('receivedPrice')
   }
+  get category(){
+    return this.productsAdd.get('category')
+  }
   get quantity(){
     return this.productsAdd.get('quantity')
   }
 
+  ngOnInit(): void {
+    this.user = this.loginService.getLocalStorage('user')
+
+  }
   ngAfterViewInit(): void {
     this.data =  this.navParams.get('data')
       if(this.data){
@@ -55,9 +63,9 @@ export class ProductDisplayModal implements AfterViewInit {
   }
 
   productsSubmit(){
-    const user = this.loginService.getLocalStorage('user')
+    this.user = this.loginService.getLocalStorage('user')
     if(this.Editproducts){
-      this._productService.updateProduct(user.productsId,this.data.productItemIndex,this.productsAdd.value).subscribe((value:any)=>{
+      this._productService.updateProduct(this.user.productsId,this.data.productItemIndex,this.productsAdd.value).subscribe((value:any)=>{
         if(!value.error){
           this._toaster.success(value.message);
           this._productService.emitSubject(true);
@@ -70,18 +78,23 @@ export class ProductDisplayModal implements AfterViewInit {
         }
       })
     }else{
-      this._productService.getProducts(user.productsId).subscribe((value:any) => {
+      this._productService.getProducts(this.user.productsId).subscribe((value:any) => {
         if(!value.error){
-          value.body.products.push(this.productsAdd.value)
-          this._productService.addProducts(value.body.products,user).subscribe((value:any) =>{
-              if(value.error){
-                  this._toaster.error(value.message)
-                }else{
-                  this._toaster.success(value.message)
-                }
-              },(rej)=>{
-                this._toaster.error(rej.error.message)
-              })
+          const existingProductName = value.body.products.find((products:any) => products.productName.toLowerCase() === this.productName?.value.toLowerCase());
+          if(!existingProductName){
+            value.body.products.push(this.productsAdd.value)
+            this._productService.addProducts(value.body.products,this.user).subscribe((value:any) =>{
+                if(value.error){
+                    this._toaster.error(value.message)
+                  }else{
+                    this._toaster.success(value.message)
+                  }
+                },(rej)=>{
+                  this._toaster.error(rej.error.message)
+                })
+          }else{
+            this._toaster.error('product already exists')
+          }
         }
       },(rej)=>{
         if(rej){
