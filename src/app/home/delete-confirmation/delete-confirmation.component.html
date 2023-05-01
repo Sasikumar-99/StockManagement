@@ -11,6 +11,6 @@
   </ion-card-content>
 <div>
   <ion-button fill="outline" [disabled]="quantity.value !== '' && quantity.value " color="danger" fill="clear" (click)="DeleteWholeProducts()">Delete All</ion-button>
-  <ion-button fill="clear" [disabled]="!quantity.value" (click)="updateQuantities(quantity.value)">{{confirmation ? 'Confirm Again' : 'Sold products'}}</ion-button>
+  <ion-button fill="clear" [disabled]="!quantity.value" (click)="updateQuantities(quantity.value)">{{confirmation && !greatorQuantity ? 'Confirm Again' : 'Sold products'}}</ion-button>
 </div>
 </ion-card>

@@ -14,23 +14,29 @@ export class DeleteConfirmationComponent implements OnInit {
   private _matDialogRef:MatDialogRef<DeleteConfirmationComponent>,private _toaster:ToastrService){}
   noOfQuantity !:any;
   confirmation : boolean = false;
+  greatorQuantity:boolean = false;
   ngOnInit(): void {}
 
   updateQuantities(quantitiesValue:any){
     const tempData = {...this.data}
+    const greatorQuantity = parseInt(quantitiesValue) !== this.data.quantity ? true : false
     tempData.quantity = this.data.quantity - parseInt(quantitiesValue);
-    if(this.data.quantity!==1){
+    if(parseInt(quantitiesValue) > this.data.quantity ){
+      this._toaster.error('Entered quantity value is more than the available stock')
+    }else if(greatorQuantity){
       this._matDialogRef.close({event:'update-quantities',data:tempData,soldCount:parseInt(quantitiesValue)});
     }else{
       if(!this.confirmation){
         this._toaster.error(`Product is about to get Empty only ${this.data.quantity} left`)
       }
     }
-    if(this.confirmation){
+    if(this.confirmation && !greatorQuantity){
       this._matDialogRef.close({event:'update-quantities',data:tempData,soldCount:parseInt(quantitiesValue)});
       this.confirmation = false;
     }else{
-      this.confirmation = true;
+      if(!greatorQuantity){
+        this.confirmation = true;
+      }
     }
   }
 
