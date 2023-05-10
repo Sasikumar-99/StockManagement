@@ -5,6 +5,7 @@ import { HomePage } from './home.page';
 import {ProductDisplay} from './product-display/display.component'
 import { SettingsComponent } from './settings/settings.component';
 import { ReportsComponent } from './reports/reports.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 const routes: Routes = [
   {
     path: '',
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path:'reports',
         component:ReportsComponent
+      },
+      {
+        path:'dashboard',
+        component:DashboardComponent
       }
     ]
   }

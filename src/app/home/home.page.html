@@ -7,6 +7,12 @@
   <ion-radio-group class="h-100" [(ngModel)]="menuGroup" (ngModelChange)="navigateValue()">
     <ion-item>
       <ion-label>
+        <code>Dashboard</code>
+      </ion-label>
+      <ion-radio value="home/dashboard"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>
         <code>Display Products</code>
       </ion-label>
       <ion-radio value="home/productDisplay"></ion-radio>
@@ -30,6 +36,7 @@
       <ion-radio value="home/reports"></ion-radio>
     </ion-item>
   </ion-radio-group>
+
 </ion-menu>
 
 <div class="ion-page" id="main-content">

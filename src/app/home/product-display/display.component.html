@@ -72,7 +72,9 @@
           <span class="ellipsis" matTooltip="Edit">Edit</span>
          </mat-header-cell>
         <mat-cell  *matCellDef="let row; let i=index">
-            <mat-icon color="primary" (click)="EditProduct(row,i)">edit</mat-icon>
+          <button class="m-0 p-0 bg-transparent" (click)="EditProduct(row,i)" [disabled]="row.quantity<=0">
+            <mat-icon color="primary" >edit</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
 
@@ -81,7 +83,9 @@
           <span class="ellipsis" matTooltip="Delete">Delete</span>
         </mat-header-cell>
         <mat-cell  *matCellDef="let row; let i=index">
-            <mat-icon color="warn" id="present-alert" (click)="deleteProduct(i)">delete</mat-icon>
+          <button class="m-0 p-0 bg-transparent" (click)="deleteProduct(i)" [disabled]="row.quantity<=0">
+            <mat-icon color="warn" id="present-alert" >delete</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
 
@@ -101,7 +105,8 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row (click)="presentPopover($event,row,i)" [ngStyle]="row.quantity<=0 ? {'background-color': '#eb445a'} : null" *matRowDef="let row;let i = index; columns: displayedColumns;">
+      </mat-row>
       <mat-footer-row *matFooterRowDef="displayedFooter;sticky:true"></mat-footer-row>
         <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
@@ -110,3 +115,18 @@
     </mat-table>
     </div>
 </div>
+<ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <div class="d-flex justify-content-around" *ngIf="!restock else afterRestock">
+        <button (click)="restock = true" mat-raised-button color="primary">Re-Stock</button>
+      </div>
+      <ng-template #afterRestock>
+        <ion-item>
+          <ion-input label="Number input" type="number" #quantity placeholder="No of Quantities"></ion-input>
+        </ion-item>
+        <button class="mt-1" mat-raised-button (click)="restockQuantities(quantity.value)">Add Re-stock</button>
+      </ng-template>
+    </ion-content>
+  </ng-template>
+</ion-popover>

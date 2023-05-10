@@ -21,22 +21,26 @@ export class DeleteConfirmationComponent implements OnInit {
     const tempData = {...this.data}
     const greatorQuantity = parseInt(quantitiesValue) !== this.data.quantity ? true : false
     tempData.quantity = this.data.quantity - parseInt(quantitiesValue);
-    if(parseInt(quantitiesValue) > this.data.quantity ){
-      this._toaster.error('Entered quantity value is more than the available stock')
-    }else if(greatorQuantity){
-      this._matDialogRef.close({event:'update-quantities',data:tempData,soldCount:parseInt(quantitiesValue)});
-    }else{
-      if(!this.confirmation){
-        this._toaster.error(`Product is about to get Empty only ${this.data.quantity} left`)
+    if(!(parseInt(quantitiesValue)<0)){
+      if(parseInt(quantitiesValue) > this.data.quantity ){
+        this._toaster.error('Entered quantity value is more than the available stock')
+      }else if(greatorQuantity){
+        this._matDialogRef.close({event:'update-quantities',data:tempData,soldCount:parseInt(quantitiesValue)});
+      }else{
+        if(!this.confirmation){
+          this._toaster.error(`Product is about to get Empty only ${this.data.quantity} left`)
+        }
       }
-    }
-    if(this.confirmation && !greatorQuantity){
-      this._matDialogRef.close({event:'update-quantities',data:tempData,soldCount:parseInt(quantitiesValue)});
-      this.confirmation = false;
-    }else{
-      if(!greatorQuantity){
-        this.confirmation = true;
+      if(this.confirmation && !greatorQuantity){
+        this._matDialogRef.close({event:'update-quantities',data:tempData,soldCount:parseInt(quantitiesValue)});
+        this.confirmation = false;
+      }else{
+        if(!greatorQuantity){
+          this.confirmation = true;
+        }
       }
+    }else{
+      this._toaster.error('Quantity should be more than 0')
     }
   }
 

@@ -24,6 +24,15 @@
 
 <body class="mat-typography">
   <app-root></app-root>
+  <script>
+  const isDarkMode =window.matchMedia('(prefers-color-scheme: dark)');
+  console.log(isDarkMode.matches);
+  if(isDarkMode.matches){
+  }
+  isDarkMode.addListener(dummy);
+  function dummy(x){
+  }
+  </script>
 </body>
 
 </html>

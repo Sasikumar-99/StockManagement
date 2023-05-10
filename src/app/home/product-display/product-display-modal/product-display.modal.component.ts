@@ -26,7 +26,7 @@ export class ProductDisplayModal implements AfterViewInit,OnInit {
       sellingPrice : new FormControl('',Validators.required),
       receivedPrice : new FormControl('',Validators.required),
       category : new FormControl('',Validators.required),
-      quantity : new FormControl('',Validators.required),
+      quantity : new FormControl('',[Validators.required,Validators.min(0)]),
     })
     this.Editproducts = false
   }

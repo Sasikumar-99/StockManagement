@@ -38,10 +38,14 @@ export class ProductDisplay implements AfterViewInit, OnInit {
   dataSource!: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('popover') popover:any;
+  restock:boolean = false;
   user: any;
   tableDisplay: any;
   tableEditable!: boolean;
   categorySelected: FormControl = new FormControl('');
+  isOpen = false;
+  needToReStock:any
   constructor(
     private _productService: ProductService,
     private _loginService: LoginPanelService,
@@ -131,47 +135,7 @@ export class ProductDisplay implements AfterViewInit, OnInit {
               }
             );
         } else if (dialogData.event.includes('update')) {
-          if(dialogData.data.quantity !==0){
-            this._productService
-            .updateProduct(this.user.productsId, productItemIndex, dialogData.data)
-            .subscribe(
-              (value: any) => {
-                if (!value.error) {
-                  this._toaster.success(value.message);
-                  this._productService.emitSubject(true);
-                  this.addReports(productItemIndex,dialogData.soldCount)
-                } else {
-                  this._toaster.error(value.message);
-                }
-                this._loginService.dismissLoading();
-              },
-              (rej) => {
-                if (rej) {
-                  this._toaster.error(rej.error.message);
-                this._loginService.dismissLoading();
-                }
-              }
-            );
-          }else{
-            this._productService
-            .deleteProduct(this.user.productsId, productItemIndex)
-            .subscribe(
-              (value: any) => {
-                if (value.error) {
-                  this._toaster.error(value.message);
-                } else {
-                  this._toaster.success(value.message);
-                  this._productService.emitSubject(true);
-                  this.addReports(productItemIndex,dialogData.soldCount)
-                }
-                this._loginService.dismissLoading();
-              },
-              (rej) => {
-                this._toaster.error(rej.error.message);
-                this._loginService.dismissLoading();
-              }
-            );
-          }
+          this.updateProduct(productItemIndex,dialogData,true)
         }
       }
     });
@@ -263,5 +227,56 @@ export class ProductDisplay implements AfterViewInit, OnInit {
     this.dataSource = new MatTableDataSource(newFiltered);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  presentPopover(e: Event,editableProduct:any,Index:number) {
+    this.needToReStock = {
+      product:editableProduct,
+      index:Index
+    };
+    if(editableProduct.quantity<=0){
+      this.popover.event = e;
+      this.isOpen = true;
+    }
+    this.restock = false;
+  }
+
+  updateProduct(index:number,dialogData:any,addReports = false){
+    const product = addReports?dialogData.data:dialogData
+    this._productService
+    .updateProduct(this.user.productsId, index, product)
+    .subscribe(
+      (value: any) => {
+        if (!value.error) {
+          this._toaster.success(value.message);
+          this._productService.emitSubject(true);
+          if(addReports){
+            this.addReports(index,dialogData.soldCount);
+          }
+          this.isOpen = false;
+        } else {
+          this._toaster.error(value.message);
+        }
+        this._loginService.dismissLoading();
+      },
+      (rej) => {
+        if (rej) {
+          this._toaster.error(rej.error.message);
+        this._loginService.dismissLoading();
+        }
+      }
+    );
+  }
+
+  restockQuantities(quantity:any){
+    const stock = parseFloat(quantity);
+    const newProduct = this.needToReStock.product;
+    newProduct.quantity = stock;
+    if(!isNaN(stock) && stock > 0 && newProduct){
+      this.updateProduct(this.needToReStock.index,newProduct);
+    }else{
+      this._toaster.error('Quantity should be more than 0')
+    }
+    this._productService.emitSubject(true);
   }
 }

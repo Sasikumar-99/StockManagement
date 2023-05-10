@@ -1,0 +1,20 @@
+<cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport">
+  <div class="d-flex justify-content-center" *ngIf="products.length<1 else ProductsCards">
+    <h1 class="m-0">No Products to Display</h1>
+  </div>
+  <ng-template #ProductsCards>
+    <div class="d-flex justify-content-start flex-wrap">
+      <ion-card *ngFor="let product of products;let i = index" [color]="colorDecision(product,i)">
+        <ion-card-header>
+          <ion-card-title>
+            <h1 class="m-0">Name : {{product.productName}}</h1></ion-card-title>
+          <ion-card-subtitle>{{product.category}}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content class="d-flex justify-content-center align-items-center">
+          <h3 class="m-0">Available Quantity : {{product.quantity}}</h3>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ng-template>
+</cdk-virtual-scroll-viewport>
