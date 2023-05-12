@@ -24,3 +24,6 @@ mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
 mat-paginator{
   width: 100%;
 }
+ion-popover {
+  --width: 350px;
+  }

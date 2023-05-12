@@ -14,7 +14,7 @@ import { ImportsModule } from './common-module/common-module';
   declarations: [AppComponent, LoginComponent,LoginPanel],
   imports: [BrowserModule,
     ToastrModule.forRoot(),
-    IonicModule.forRoot(),
+    IonicModule.forRoot({mode:'ios'}),
     AppRoutingModule,
     ImportsModule,
     BrowserAnimationsModule],

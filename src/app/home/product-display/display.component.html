@@ -117,16 +117,18 @@
 </div>
 <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
-    <ion-content class="ion-padding">
+    <div class="ion-padding">
       <div class="d-flex justify-content-around" *ngIf="!restock else afterRestock">
         <button (click)="restock = true" mat-raised-button color="primary">Re-Stock</button>
       </div>
       <ng-template #afterRestock>
-        <ion-item>
-          <ion-input label="Number input" type="number" #quantity placeholder="No of Quantities"></ion-input>
-        </ion-item>
-        <button class="mt-1" mat-raised-button (click)="restockQuantities(quantity.value)">Add Re-stock</button>
+        <div class="d-flex align-items-center">
+          <ion-item class="w-100">
+            <ion-input label="Number input" type="number" #quantity placeholder="No of Quantities"></ion-input>
+          </ion-item>
+          <button  mat-raised-button color="primary" (click)="restockQuantities(quantity.value)">Add</button>
+        </div>
       </ng-template>
-    </ion-content>
+    </div>
   </ng-template>
 </ion-popover>

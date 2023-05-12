@@ -1,11 +1,11 @@
-<ion-card>
+<ion-card class="d-flex align-items-center justify-content-around m-0 p-0">
   <ion-card-header>
     <ion-card-title>Reports</ion-card-title>
     <ion-card-subtitle>Pick a Date</ion-card-subtitle>
   </ion-card-header>
 
-  <ion-card-content>
-    <mat-form-field appearance="outline">
+  <ion-card-content class="p-0">
+    <mat-form-field appearance="outline" class="p-0">
       <mat-label>Enter a date range</mat-label>
       <mat-date-range-input [formGroup]="range" [rangePicker]="picker" >
         <input matStartDate formControlName="start" placeholder="Start date">
@@ -21,11 +21,11 @@
   </ion-card-content>
 </ion-card>
 
-<div class="d-flex justify-content-center" *ngIf="sortedReports.length<1 else reportTable">
+<div class="d-flex justify-content-center mt-2" *ngIf="sortedReports.length<1 else reportTable">
   <h3 class="m-0">{{!start && !end?'Pick Start and End Date':'No reports Found on the specified Date'}}</h3>
 </div>
 <ng-template #reportTable>
-<cdk-virtual-scroll-viewport style="overflow-x: hidden;" itemSize="50" class="example-viewport">
+<cdk-virtual-scroll-viewport style="overflow-x: hidden;" itemSize="60" class="example-viewport mt-2">
     <ion-card *cdkVirtualFor="let report of sortedReports" class="m-0">
       <ion-card-header class="p-1">
         <h3 class="m-0">{{report.date}}</h3>
@@ -84,7 +84,7 @@
 
             <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          <tr class="mat-row" *matNoDataRow>
+          <tr class="mat-row" *matNoDataRow>  
             <td class="mat-cell" colspan="4"><strong>No products to display..</strong></td>
           </tr>
           </mat-table>
