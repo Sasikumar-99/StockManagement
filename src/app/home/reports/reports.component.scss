@@ -37,5 +37,9 @@ mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
 
 .example-viewport {
   width: 100%;
-  height: calc( 100vh - 251px);
+  height: calc( 100vh - 180px);
+}
+
+::ng-deep .mat-mdc-text-field-wrapper{
+  padding: 0px!important;
 }

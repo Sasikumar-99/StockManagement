@@ -29,8 +29,15 @@ export class DashboardComponent implements OnInit {
     this._productService.getProducts(this.user.productsId).subscribe(
       (value: any) => {
         if (!value.error) {
-          this.products = value.body.products;
-          console.log(this.products);
+          this.products = value.body.products.sort((a:any,b:any)=>{
+            if(a.quantity > b.quantity){
+              return 1
+            }
+            if(a.quantity < b.quantity){
+              return -1
+            }
+            return 0
+          });
         } else {
           this._toaster.error(value.message);
         }
