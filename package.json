@@ -1,5 +1,5 @@
 {
-  "name": "firstProjectIonic",
+  "name": "Stock Application",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -11,7 +11,8 @@
     "server": "node src/server/index.js",
     "deploy": "npm run build && npm run server",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "android": "ionic capacitor build android"
   },
   "private": true,
   "dependencies": {
