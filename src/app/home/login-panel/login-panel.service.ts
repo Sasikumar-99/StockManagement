@@ -29,7 +29,7 @@ export class LoginPanelService{
     if(userExist){
       return JSON.parse(userExist);
     }else{
-      return 'value does not exist with the provided key';
+      return false;
     }
   }
 

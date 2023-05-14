@@ -44,7 +44,7 @@
           <span class="ellipsis" matTooltip="Received Price">Received Price</span>
            </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <span appSecretKey class="ellipsis" [matTooltip]="element.receivedPrice">{{element.receivedPrice}}</span>
+          <span appSecretKey class="ellipsis" [matTooltip]="element.receivedPrice | secretKeyPipe">{{element.receivedPrice}}</span>
         </mat-cell>
       </ng-container>
 

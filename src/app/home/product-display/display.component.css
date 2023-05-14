@@ -1,7 +1,7 @@
 
 mat-header-cell,mat-cell{
   padding: 0px !important;
-  justify-content: left!important;
+  justify-content: center!important;
   align-items: center!important;
 }
 

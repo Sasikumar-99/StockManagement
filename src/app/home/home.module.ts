@@ -19,6 +19,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { PopoverComponent } from './settings/popover/popover.component';
 import { ReportsComponent } from './reports/reports.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SecretKeyPipePipe } from '../secret-key-pipe.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,7 +28,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ImportsModule
   ],
   exports:[ProductDisplay],
-  declarations: [Spinner,SecretKeyDirective,HomePage,Navbar,ProductDisplay,ProductDisplayModal,OtpModal, DeleteConfirmationComponent, SettingsComponent, PopoverComponent, ReportsComponent, DashboardComponent],
+  declarations: [SecretKeyPipePipe,Spinner,SecretKeyDirective,HomePage,Navbar,ProductDisplay,ProductDisplayModal,OtpModal, DeleteConfirmationComponent, SettingsComponent, PopoverComponent, ReportsComponent, DashboardComponent],
   providers : [ProductService,LoginPanelService,ChatAppService],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })

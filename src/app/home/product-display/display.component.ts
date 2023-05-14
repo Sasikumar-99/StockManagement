@@ -203,12 +203,6 @@ export class ProductDisplay implements AfterViewInit, OnInit {
   qrCodeClick(index: number) {
     console.log(index);
   }
-
-  categoryClicked() {
-    const check = document.getElementById('categorySelect');
-    check?.click();
-  }
-
   selectedCategoryChange() {
     let newFiltered:any = []
     const forFiltering = [...this.tableDisplay];
