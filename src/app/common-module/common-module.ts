@@ -19,9 +19,11 @@ import { FormsModule } from '@angular/forms';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 @NgModule({
   declarations: [],
   imports: [
+    MatAutocompleteModule,
     ScrollingModule,
     MatNativeDateModule,
     MatDatepickerModule,
@@ -43,6 +45,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     NgOtpInputModule,
     MatTooltipModule
   ],exports : [
+    MatAutocompleteModule,
     ScrollingModule,
     MatNativeDateModule,
     MatDatepickerModule,

@@ -1,0 +1,170 @@
+<div class="d-flex justify-content-around align-items-center mt-2">
+  <!-- <ion-searchbar animated="true" placeholder="Animated" #searchKey [matAutocomplete]="auto"></ion-searchbar> -->
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Search Here..</mat-label>
+    <input type="text" placeholder="Type to Search.." matInput [formControl]="myControl" [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.serialNo" (onSelectionChange)="onSelFunc(option)">
+        <span>{{option.serialNo}}</span> |
+        <span>{{option.customerName}}</span> |
+        <small>Model: {{option.model}}</small>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="newForm()">Add</button>
+</div>
+<!-- <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+    <ng-container matColumnDef="s.no">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="S.No">S.No</span>
+        </mat-header-cell>
+      <mat-cell *matCellDef="let element;let i=index">
+        <mat-form-field appearance="outline">
+          <input matInput placeholder="Serial No" [value]="setSerialNumber(i)">
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Date">Date</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Date">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="model">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Model">Model</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Model">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="customerName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Customer Name">Customer Name</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Customer Name">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Product Name">Description</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Description">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="mobileNo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Mobile No">Contact No</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Mobile No">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Price">Price</span>
+      </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Price">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="ellipsis" matTooltip="Status">Status</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Status">
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <tr class="mat-row" *matNoDataRow>  
+    <td class="mat-cell" colspan="4"><strong>No products to display..</strong></td>
+  </tr>
+  </mat-table>  -->
+  <div [formGroup]="servicePanel">
+    <cdk-virtual-scroll-viewport style="overflow-x: hidden;" itemSize="60" class="example-viewport">
+      <ion-grid>
+      <ion-card class="m-1" formArrayName="serviceEntry" *ngFor = "let entry of getServiceEntry.controls; let i = index">
+        <ion-card-content [formGroupName]="i" class="m-0 p-1">
+            <ion-row class="ion-justify-content-start">
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Serial No</ion-label>
+                    <ion-input type="text" autofocus formControlName="serialNo" [value]="setSerialNumber(i)"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Date</ion-label>
+                    <ion-input type="text" autofocus formControlName="date"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Model</ion-label>
+                    <ion-input type="text" autofocus formControlName="model"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Customer Name</ion-label>
+                    <ion-input type="text" autofocus formControlName="customerName"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Description</ion-label>
+                    <ion-input type="text" autofocus formControlName="description"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Mobile No</ion-label>
+                    <ion-input type="text" autofocus formControlName="contactNo"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col  class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Price</ion-label>
+                    <ion-input type="text" autofocus formControlName="price"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col class="ion-float-left" size="auto">
+                  <ion-item fill="outline" mode="md">
+                    <ion-label position="floating">Status</ion-label>
+                    <ion-input type="text" autofocus formControlName="status"></ion-input>
+                  </ion-item>
+                </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-grid>
+    </cdk-virtual-scroll-viewport>
+  </div>

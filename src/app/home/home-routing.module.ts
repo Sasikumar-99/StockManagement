@@ -6,6 +6,7 @@ import {ProductDisplay} from './product-display/display.component'
 import { SettingsComponent } from './settings/settings.component';
 import { ReportsComponent } from './reports/reports.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EntryComponent } from './entry/entry.component';
 const routes: Routes = [
   {
     path: '',
@@ -35,7 +36,10 @@ const routes: Routes = [
       {
         path:'dashboard',
         component:DashboardComponent
-      }
+      },
+      {path:'entry',
+      component:EntryComponent
+    }
     ]
   }
 ];

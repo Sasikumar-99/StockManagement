@@ -1,0 +1,50 @@
+
+::ng-deep .mat-mdc-input-element{
+    text-overflow: ellipsis!important;
+    font-size: medium!important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper{
+    padding-left: 3px!important;
+    padding-right: 3px!important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+mat-header-cell,mat-cell{
+    padding: 0px !important;
+    justify-content: center!important;
+    align-items: center!important;
+}
+
+mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.mat-mdc-table {
+    width: 100%;
+    height: calc( 100vh - 100px);
+    overflow: auto;
+}
+
+/* ion-item {
+    --inner-padding-bottom: 0;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    --inner-padding-top: 0;
+  }
+  ion-input{
+    --padding-bottom: 0;
+    --padding-end: 0;
+    --padding-start: 0;
+    --padding-top: 0;
+  } */
+
+  .example-viewport {
+    width: 100%;
+    height: calc( 100vh - 120px);
+  }
+  .example-full-width{
+    width: 90%;
+  }
