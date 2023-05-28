@@ -43,8 +43,11 @@ mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
 
   .example-viewport {
     width: 100%;
-    height: calc( 100vh - 120px);
+    height: calc( 100vh - 159px);
   }
   .example-full-width{
     width: 90%;
   }
+.newFormButton{
+  width: calc( 100vw - 48px);
+}
