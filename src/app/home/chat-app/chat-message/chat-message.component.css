@@ -1,0 +1,28 @@
+ion-thumbnail {
+  --border-radius : 30px;
+ }
+ .user-header {
+ --background:var(--ion-color-step-350);
+}
+.MessageArea{
+  width: 100%;
+  position:fixed;
+  right:0;
+  bottom:0;
+  display: flex;
+  align-items: center;
+}
+.back-button{
+  --padding-start : 0px;
+  --padding-end : 0px
+}
+ion-textarea{
+  --background:var(--ion-color-step-350);
+  padding-left: 10px;
+  /* padding-right:10px; */
+  border: solid 1px var(--ion-color-step-350);
+  border-radius: 50px;
+}
+.native-textarea.sc-ion-textarea-ios{
+  padding-right: 0px;
+}

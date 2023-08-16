@@ -1,27 +1,25 @@
-<ion-card class="cardStyle m-0">
-  <ion-item>
-    <ion-avatar slot="start">
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-    </ion-avatar>
-    <ion-label>
-      <ion-card-title>{{appearedUser.userName|titlecase}}</ion-card-title>
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" class="m-0 back-button" (click)="backButton()">
+      <ion-icon  size="large" name="chevron-back" ></ion-icon>
+    </ion-button>
+      <ion-avatar slot="start" class="mx-2">
+        <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+      </ion-avatar>
+      <ion-title class="p-0">{{(currentlyChattingTo$|async)?.userName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-list lines="full">
+  <ion-item *ngFor="let message of this.userMessages">
+    <ion-label [slot]='message.slot'>
+      <h3 class="m-0">{{message.messageBody}}</h3>
+      <p>{{message.createdAt}}</p>
     </ion-label>
   </ion-item>
-  <ion-list>
-    <ion-item lines="full">
-      <ion-label>
-        <h3 class="m-0">Text Item</h3>
-        <p class="m-0">0.00 am</p>
-      </ion-label>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-label slot="end">Mega Man X</ion-label>
-    </ion-item>
-  </ion-list>
-  <div class="d-flex align-items-center">
-    <ion-textarea slot="start" #message type="text" placeholder="Enter message here....."></ion-textarea>
-    <ion-button color="light" (click)="onSend(message.value)">
-      <ion-icon slot="end" name="send"></ion-icon>
-    </ion-button>
-  </div>
-</ion-card>
+</ion-list >
+  <ion-item lines="none" class="MessageArea mb-2">
+    <ion-textarea placeholder="Type something here" [autoGrow]="true" #content></ion-textarea>
+    <ion-button slot="end" size="default" (click)="onSend(content.value)"><ion-icon name="send"></ion-icon></ion-button>
+  </ion-item>
+

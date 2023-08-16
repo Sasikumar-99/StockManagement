@@ -2,7 +2,7 @@
   <div>
     <router-outlet></router-outlet>
   </div>
-  <div>
+  <div [ngClass]="(this.$hideNavbar|async) ? 'd-none' : 'd-block'">
     <div class="d-flex justify-content-around align-items-center w-100" style="position: fixed;bottom: 0">
       <div routerLink="chats" [routerLinkActive]="['active']" class="d-flex justify-content-center flex-column align-items-center">
         <ion-icon name="chatbubbles"></ion-icon>

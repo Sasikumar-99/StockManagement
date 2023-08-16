@@ -1,10 +1,10 @@
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Users</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
+<p class="m-0">
+  {{(loggedUser$|async)?.userName}}
+</p>
+<ion-card class="mx-0 my-1">
+  <ion-card-content class="p-0">
     <ion-list>
-      <ion-item *ngFor="let user of users" (click)="onContactClick(user)">
+      <ion-item *ngFor="let user of users" (click)="onContactClick(user)" class="p-0">
         <ion-thumbnail slot="start" >
           <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
         </ion-thumbnail>

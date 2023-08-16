@@ -1,4 +1,3 @@
-import { ChatAppService } from './chat-app/chat-app.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -31,7 +30,7 @@ import { EntryComponent } from './entry/entry.component';
   ],
   exports:[ProductDisplay],
   declarations: [SecretKeyPipePipe,Spinner,SecretKeyDirective,HomePage,Navbar,ProductDisplay,ProductDisplayModal,OtpModal, DeleteConfirmationComponent, SettingsComponent, PopoverComponent, ReportsComponent, DashboardComponent, EntryComponent],
-  providers : [ProductService,LoginPanelService,ChatAppService],
+  providers : [ProductService,LoginPanelService],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePageModule {}

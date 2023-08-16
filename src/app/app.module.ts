@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -10,6 +10,9 @@ import { LoginComponent } from './login/login.component';
 import { LoginPanel } from './home/login-panel/login-panel.component';
 import { LoginPanelService } from './home/login-panel/login-panel.service';
 import { ImportsModule } from './common-module/common-module';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
 @NgModule({
   declarations: [AppComponent, LoginComponent,LoginPanel],
   imports: [BrowserModule,
@@ -17,7 +20,11 @@ import { ImportsModule } from './common-module/common-module';
     IonicModule.forRoot({mode:'ios'}),
     AppRoutingModule,
     ImportsModule,
-    BrowserAnimationsModule],
+    BrowserAnimationsModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+  ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },LoginPanelService],
   bootstrap: [AppComponent]
 })
