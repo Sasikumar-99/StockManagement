@@ -1,7 +1,8 @@
 {
-  "name": "Stock_App",
+  "name": "StockWhiz",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

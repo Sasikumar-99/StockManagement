@@ -4,13 +4,14 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import { ProductService } from "./product.service";
 import { LoginPanelService } from "../login-panel/login-panel.service";
-import { ToastrService } from "ngx-toastr";
+import { ToastrService } from 'src/app/toastr.service';
 import { MatDialog } from "@angular/material/dialog";
-import { ProductDisplayModal } from "./product-display-modal/product-display.modal.component";
+import { ProductDisplayModalComponent } from "./product-display-modal/product-display.modal.component";
 import { ModalController } from "@ionic/angular";
 import { DeleteConfirmationComponent } from "../delete-confirmation/delete-confirmation.component";
 import { FormControl } from "@angular/forms";
 import * as moment from "moment";
+import { CommonService } from "src/app/common.service";
 export interface UserData {
   productName: string;
   sellingPrice: string;
@@ -24,7 +25,7 @@ export interface UserData {
   templateUrl: 'display.component.html',
   styleUrls: ['display.component.css'],
 })
-export class ProductDisplay implements AfterViewInit, OnInit {
+export class ProductDisplayComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = [
     'productName',
     'sellingPrice',
@@ -46,15 +47,19 @@ export class ProductDisplay implements AfterViewInit, OnInit {
   categorySelected: FormControl = new FormControl('');
   isOpen = false;
   needToReStock:any
+
+
   constructor(
     private _productService: ProductService,
     private _loginService: LoginPanelService,
     private _toaster: ToastrService,
     private matDialog: MatDialog,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private _commonService: CommonService
   ) {
     this.tableEditable = false;
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -62,10 +67,17 @@ export class ProductDisplay implements AfterViewInit, OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+
   }
+
   ngOnInit(): void {
     this.user = this._loginService.getLocalStorage('user');
+    this._productService.searchOtherProductKey.subscribe((value: Event)=> {
+         this.applyFilter(value)
+      }
+    );
   }
+
   ngAfterViewInit() {
     this.getAllProducts();
     this._productService.productValueUpdated.subscribe((value) => {
@@ -91,13 +103,13 @@ export class ProductDisplay implements AfterViewInit, OnInit {
         }
         this._loginService.dismissLoading();
       }
-    );
+    )
   }
 
   async EditProduct(products: any, productIndex: any) {
     const data = { products: products, productItemIndex: productIndex };
     const modal = await this.modalCtrl.create({
-      component: ProductDisplayModal,
+      component: ProductDisplayModalComponent,
       componentProps: { data: data },
     });
     modal.present();
@@ -198,29 +210,24 @@ export class ProductDisplay implements AfterViewInit, OnInit {
       }
     })
   }
+
   assignPages(event: any) {}
 
   qrCodeClick(index: number) {
     console.log(index);
   }
-  selectedCategoryChange() {
-    let newFiltered:any = []
-    const forFiltering = [...this.tableDisplay];
-    if(this.categorySelected.value.length){
-      this.categorySelected.value.forEach((value: any) => {
-        forFiltering.forEach((tableValue:any)=>{
-          if(tableValue.category === value){
-            newFiltered.push(tableValue)
-          }
-        })
-      });
-    }else{
-      newFiltered = forFiltering
-    }
 
-    this.dataSource = new MatTableDataSource(newFiltered);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  selectedCategoryChange() {
+      const categoryFilter = this.tableDisplay.filter((filterValue: any) => {
+        if( this.categorySelected.value.length ) {
+          return this.categorySelected.value.includes( filterValue.category );
+        } else {
+          return filterValue;
+        }
+      })
+      this.dataSource = new MatTableDataSource( categoryFilter );
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
   }
 
   presentPopover(e: Event,editableProduct:any,Index:number) {
@@ -272,5 +279,13 @@ export class ProductDisplay implements AfterViewInit, OnInit {
       this._toaster.error('Quantity should be more than 0')
     }
     this._productService.emitSubject(true);
+  }
+
+  get isTableDataForFiltering() {
+    return this.dataSource?.filteredData;
+  }
+
+  get commonService(): CommonService {
+    return this._commonService;
   }
 }

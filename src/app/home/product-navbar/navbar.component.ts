@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalController } from "@ionic/angular";
-import { ToastrService } from "ngx-toastr";
 import { LoginPanelService } from "../login-panel/login-panel.service";
-import { OtpModal } from "../otp-modal/otp.modal.component";
-import { ProductDisplayModal } from "../product-display/product-display-modal/product-display.modal.component";
+import { OtpModalComponent } from "../otp-modal/otp.modal.component";
+import { ProductDisplayModalComponent } from "../product-display/product-display-modal/product-display.modal.component";
 import { ProductService } from "../product-display/product.service";
+import { CommonService } from "src/app/common.service";
 
 @Component({
   selector : 'app-navbar',
@@ -14,18 +14,23 @@ import { ProductService } from "../product-display/product.service";
   styleUrls : ['navbar.component.css']
 })
 
-export class Navbar {
+export class NavbarComponent {
+
+  @Input() device!: Boolean;
   toggleDone!:FormControl
-  constructor(public dialog: MatDialog,private _productService:ProductService,
-    private _loginService:LoginPanelService,private _toaster:ToastrService,private modalCtrl:ModalController ) {
+  constructor(
+    private _productService:ProductService,
+    private _loginService:LoginPanelService,
+    private modalCtrl:ModalController,
+    private _commonService: CommonService,
+    public dialog: MatDialog ) {
       this.toggleDone=new FormControl(false)
     }
 
 
   async addProducts() {
-        // const dialogRef = this.dialog.open(ProductDisplayModal);
         const modal = await this.modalCtrl.create({
-          component: ProductDisplayModal,
+          component: ProductDisplayModalComponent,
         });
         modal.present();
         if(modal){
@@ -37,6 +42,7 @@ export class Navbar {
         });
   }
 
+
   refreshButton(){
     this._productService.emitSubject(true);
   }
@@ -45,7 +51,7 @@ export class Navbar {
 
     if(checked){
       this.toggleDone.setValue(true);
-      const dialogRef = this.dialog.open(OtpModal)
+      const dialogRef = this.dialog.open(OtpModalComponent)
       dialogRef.afterClosed().subscribe((result:any) => {
         this.toggleDone.setValue(false);
         this._loginService.dismissLoading();
@@ -63,5 +69,13 @@ export class Navbar {
   }
   openChat(){
 
+  }
+
+  get productService(): ProductService {
+    return this._productService;
+  }
+
+  get commonService(): CommonService {
+    return this._commonService;
   }
 }

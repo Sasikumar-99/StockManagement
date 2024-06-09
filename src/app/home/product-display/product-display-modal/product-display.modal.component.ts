@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NavParams } from '@ionic/angular';
 import { ModalController } from "@ionic/angular";
-import { ToastrService } from "ngx-toastr";
+import { ToastrService } from 'src/app/toastr.service';
 import { LoginPanelService } from "../../login-panel/login-panel.service";
 import { ProductService } from "../product.service";
 
@@ -12,7 +12,7 @@ import { ProductService } from "../product.service";
   styleUrls : ['product-display.modal.component.css']
 })
 
-export class ProductDisplayModal implements AfterViewInit,OnInit {
+export class ProductDisplayModalComponent implements AfterViewInit,OnInit {
   productsAdd!:FormGroup
   Editproducts:boolean
   user:any

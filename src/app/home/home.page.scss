@@ -50,10 +50,18 @@ main{
   overflow-y: hidden!important;
 }
 
-ion-content {
-  overflow: hidden;
-  --overflow: hidden;
-}
+// ion-content {
+//   overflow: hidden;
+//   --overflow: hidden;
+// }
 .active{
 color: red;
+}
+
+.overFlowProperty{
+  --overflow: hidden;
+}
+
+.align-fab-button {
+  bottom: 3rem;
 }

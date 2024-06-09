@@ -1,7 +1,11 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoginPanelService } from './login-panel/login-panel.service';
+import { CommonService } from '../common.service';
+import { ProductService } from './product-display/product.service';
+import { MatDialog } from '@angular/material/dialog';
+import { OtpModalComponent } from './otp-modal/otp.modal.component';
 
 
 @Component({
@@ -12,7 +16,11 @@ import { LoginPanelService } from './login-panel/login-panel.service';
 export class HomePage implements OnInit {
   public menuGroup!:string
   navigation!:FormControl
-  constructor(private _loginService:LoginPanelService,public _router:Router,private _activatedRoute:ActivatedRoute) {
+  constructor( private _loginService: LoginPanelService,
+    public _router: Router,
+    private _commonService: CommonService,
+    private _productService:ProductService,
+    public dialog: MatDialog ) {
     this.navigation= new FormControl()
   }
 ngOnInit(): void {
@@ -29,5 +37,17 @@ ngOnInit(): void {
 
   navigateValue(){
     this._router.navigate([`${this.menuGroup}`])
+  }
+
+  secretKeyEnabled(){
+    const dialogRef = this.dialog.open(OtpModalComponent)
+    dialogRef.afterClosed().subscribe((result:any) => {
+      this._loginService.dismissLoading();
+      this._productService.emitSubject(true);
+    });
+}
+
+get commonService(): CommonService {
+    return this._commonService;
   }
 }

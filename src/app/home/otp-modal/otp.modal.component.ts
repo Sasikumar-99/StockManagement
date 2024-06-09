@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/toastr.service';
 import { LoginPanelService } from '../login-panel/login-panel.service';
 import { ProductService } from '../product-display/product.service';
 
@@ -11,7 +11,7 @@ import { ProductService } from '../product-display/product.service';
   encapsulation:ViewEncapsulation.None
 })
 
-export class OtpModal{
+export class OtpModalComponent{
    _secretKey:any = []
   constructor(private _loginService:LoginPanelService,private _toaster:ToastrService,private _productService:ProductService){}
 

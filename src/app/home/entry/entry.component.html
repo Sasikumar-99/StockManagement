@@ -1,16 +1,9 @@
 <div class="d-flex justify-content-around align-items-center">
-  <ion-searchbar class="p-1" animated="true" placeholder="Animated" #searchKey
+  <ion-searchbar class="p-1" animated="true" placeholder="Search" #searchKey
     [formControl]="myControl"></ion-searchbar>
 </div>
-<div class="d-flex justify-content-between align-items-center">
-  <div>
-    <button class="newFormButton" mat-raised-button color="primary" (click)="newForm()">Add</button>
-  </div>
-  <div style="font-size: x-large;">
-    <ion-icon name="arrow-up-circle-outline" (click)="viewPort.scrollToIndex(0, 'smooth')"></ion-icon>
-    <ion-icon name="arrow-down-circle-outline"
-      (click)="viewPort.scrollToIndex(getServiceEntry.length, 'smooth')"></ion-icon>
-  </div>
+<div>
+  <ion-button type="button" expand="block" color="medium" (click)="newForm()">Add</ion-button>
 </div>
 <!-- <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
     <ng-container matColumnDef="s.no">
@@ -108,7 +101,6 @@
   </tr>
   </mat-table>  -->
 <div [formGroup]="servicePanel">
-  <cdk-virtual-scroll-viewport style="overflow-x: hidden;" itemSize="99999999999" class="example-viewport">
     <ion-grid class="p-0">
       <ion-card class="m-1" formArrayName="serviceEntry" *ngFor="let entry of formArr$|async; let i = index">
         <ion-card-content [formGroupName]="i" class="m-0 p-0">
@@ -161,5 +153,4 @@
         </ion-card-content>
       </ion-card>
     </ion-grid>
-  </cdk-virtual-scroll-viewport>
 </div>

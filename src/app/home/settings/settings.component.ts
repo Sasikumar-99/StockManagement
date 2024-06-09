@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { LoginPanelService } from '../login-panel/login-panel.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/toastr.service';
 import { PopoverController } from '@ionic/angular';
 import { PopoverComponent } from './popover/popover.component';
 import { SettingsServiceService } from './settings-service.service';

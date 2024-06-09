@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChatAppComponent } from './chat-app/chat-app.component';
 import { HomePage } from './home.page';
-import {ProductDisplay} from './product-display/display.component'
+import { ProductDisplayComponent } from './product-display/display.component'
 import { SettingsComponent } from './settings/settings.component';
 import { ReportsComponent } from './reports/reports.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,17 +12,8 @@ const routes: Routes = [
     component: HomePage,
     children:[
       {
-        path:'',
-        redirectTo:'productDisplay',
-        pathMatch:'full'
-      },
-      {
         path:'productDisplay',
-        component:ProductDisplay
-      },
-      {
-        path:'chatApp',
-        loadChildren: () => import('./chat-app/chatApp.module').then( m => m.ChatApp)
+        component:ProductDisplayComponent
       },
       {
         path:'settings',
@@ -37,9 +27,15 @@ const routes: Routes = [
         path:'dashboard',
         component:DashboardComponent
       },
-      {path:'entry',
-      component:EntryComponent
-    }
+      {
+        path:'entry',
+        component:EntryComponent
+      },
+      {
+        path:'',
+        redirectTo:'productDisplay',
+        pathMatch:'full'
+      },
     ]
   }
 ];

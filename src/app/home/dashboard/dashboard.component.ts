@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginPanelService } from '../login-panel/login-panel.service';
 import { ProductService } from '../product-display/product.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/toastr.service';
 
 @Component({
   selector: 'app-dashboard',

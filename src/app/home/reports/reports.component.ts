@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { LoginPanelService } from '../login-panel/login-panel.service';
 import { ProductService } from '../product-display/product.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/toastr.service';
 
 @Component({
   selector: 'app-reports',

@@ -13,7 +13,7 @@ export class LoginComponent {
   }
   loginSuccess(event:any){
     if(event){
-    this._router.navigate(['home'])
+    this._router.navigate(['dashboard'])
     }
   }
 }

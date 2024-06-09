@@ -37,9 +37,18 @@ mat-header-cell > span.ellipsis,mat-cell > span.ellipsis {
 
 .example-viewport {
   width: 100%;
-  height: calc( 100vh - 180px);
+  height: calc( 100vh - 109px);
 }
 
 ::ng-deep .mat-mdc-text-field-wrapper{
   padding: 0px!important;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  height: calc( 100vh - 109px);
+  overflow: auto;
+}
+.calendar-day {
+  color: white !important;
 }

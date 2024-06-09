@@ -5,7 +5,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Observable, debounceTime, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 import { EntryServiceService } from './entry-service.service';
 import { LoginPanelService } from '../login-panel/login-panel.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/toastr.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as moment from 'moment';
 

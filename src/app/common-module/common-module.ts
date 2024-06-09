@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ToastrModule } from 'ngx-toastr';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { QRCodeModule } from 'angularx-qrcode';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -28,7 +27,6 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatNativeDateModule,
     MatDatepickerModule,
     QRCodeModule,
-    ToastrModule,
     MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
@@ -50,7 +48,6 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatNativeDateModule,
     MatDatepickerModule,
     QRCodeModule,
-    ToastrModule,
     MatDialogModule,
     ReactiveFormsModule,
     FormsModule,

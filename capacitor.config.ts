@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'Stock_App',
+  appName: 'StockWhiz',
   webDir: 'www',
   bundledWebRuntime: true
 };

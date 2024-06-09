@@ -9,7 +9,8 @@ export class LoginPanelService{
 
   constructor(private _http:HttpClient,private loading:LoadingController,private dialog:MatDialog){}
   private _domain = environment.baseUrl
-  private _loading:any
+  private _loading:any;
+  private _isLoggedIn: boolean = false;
 
   userManagement(data:any){
     return this._http.post(`${this._domain}login`,data)
@@ -43,9 +44,15 @@ export class LoginPanelService{
   async showLoading() {
     this._loading = this.dialog.open(Spinner,{disableClose:true})
   }
+
   async dismissLoading(){
     if(this._loading){
       await this._loading.close();
     }
   }
+
+  get isLoggedIn(): boolean{
+    return this.getLocalStorage('user')? true: false;
+  }
+
 }

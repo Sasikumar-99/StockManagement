@@ -1,9 +1,4 @@
-<ion-card class="d-flex align-items-center justify-content-around m-0 p-0">
-  <ion-card-header>
-    <ion-card-title>Reports</ion-card-title>
-    <ion-card-subtitle>Pick a Date</ion-card-subtitle>
-  </ion-card-header>
-
+<!-- <ion-card class="d-flex align-items-center justify-content-around m-0 p-0">
   <ion-card-content class="p-0">
     <mat-form-field appearance="outline" class="p-0">
       <mat-label>Enter a date range</mat-label>
@@ -19,21 +14,44 @@
       <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
     </mat-form-field>
   </ion-card-content>
-</ion-card>
+</ion-card> -->
+<ion-datetime-button color="medium" datetime="datetime"></ion-datetime-button>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime
+      id="datetime"
+      presentation="date-time"
+      value="2023-11-02T01:22:00"
+      [formatOptions]="{
+        date: {
+          weekday: 'short',
+          month: 'long',
+          day: '2-digit',
+        },
+        time: {
+          hour: '2-digit',
+          minute: '2-digit',
+        },
+      }"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+
 
 <div class="d-flex justify-content-center mt-2" *ngIf="sortedReports.length<1 else reportTable">
   <h3 class="m-0">{{!start && !end?'Pick Start and End Date':'No reports Found on the specified Date'}}</h3>
 </div>
 <ng-template #reportTable>
-<cdk-virtual-scroll-viewport style="overflow-x: hidden;" itemSize="60" class="example-viewport mt-2">
-    <ion-card *cdkVirtualFor="let report of sortedReports" class="m-0">
+    <ion-card *ngFor="let report of sortedReports" class="m-0">
       <ion-card-header class="p-1">
         <h3 class="m-0">{{report.date}}</h3>
       </ion-card-header>
       <ion-card-content class="m-0 p-1">
         <div>
-          <mat-table [dataSource]="report.soldData" matSort style="overflow: auto;" class="mat-elevation-z8" >
-            <!-- Position Column -->
+          {{report.soldData}}
+          <!-- <mat-table [dataSource]="report.soldData" matSort style="overflow: auto;" class="mat-elevation-z8" >
             <ng-container matColumnDef="productName">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
                 <span class="ellipsis" matTooltip="Product Name">Product Name</span>
@@ -43,7 +61,6 @@
               </mat-cell>
             </ng-container>
 
-            <!-- Name Column -->
             <ng-container matColumnDef="quantitySold">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
                 <span class="ellipsis" matTooltip="Quantity soldCount">Quantity Sold</span>
@@ -53,7 +70,6 @@
                  </mat-cell>
             </ng-container>
 
-            <!-- Weight Column -->
             <ng-container matColumnDef="receivedPrice">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
                 <span class="ellipsis" matTooltip="Received Price">Received Price</span>
@@ -63,7 +79,6 @@
               </mat-cell>
             </ng-container>
 
-            <!-- Symbol Column -->
             <ng-container matColumnDef="soldPrice">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
                 <span class="ellipsis" matTooltip="soldPrice">Sold Price</span>
@@ -84,14 +99,13 @@
 
             <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          <tr class="mat-row" *matNoDataRow>  
+          <tr class="mat-row" *matNoDataRow>
             <td class="mat-cell" colspan="4"><strong>No products to display..</strong></td>
           </tr>
-          </mat-table>
+          </mat-table> -->
           </div>
       </ion-card-content>
     </ion-card>
-  </cdk-virtual-scroll-viewport>
 </ng-template>
 
 

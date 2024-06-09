@@ -11,6 +11,7 @@ export class ProductService {
   productValueUpdated = new EventEmitter();
   private _loading:any
    _editValueEmitter = new EventEmitter();
+   searchOtherProductKey = new EventEmitter();
   constructor(private _http:HttpClient,private loading:LoadingController) { }
 
   addProducts(productBody:any,user:any){
